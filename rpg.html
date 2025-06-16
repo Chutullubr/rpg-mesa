@@ -1,0 +1,2986 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- Meta tags para SEO -->
+  <meta name="description" content="A Mesa dos Antigos: uma campanha de Call of Cthulhu nos anos 1920, cheia de horror cósmico e mistérios em Arkham.">
+  <meta name="keywords" content="Call of Cthulhu, RPG de mesa, horror cósmico, Arkham, Mythos, Cthulhu">
+  <meta name="author" content="A Mesa dos Antigos">
+  <!-- Meta tags para Open Graph (redes sociais) -->
+  <meta property="og:title" content="A Mesa dos Antigos - Call of Cthulhu">
+  <meta property="og:description" content="Explore nossa campanha de horror cósmico em Call of Cthulhu.">
+  <meta property="og:image" content="https://i.imgur.com/abc123.jpg"> <!-- Substitua por uma URL de imagem real -->
+  <meta property="og:url" content="https://www.sua-mesa-dos-antigos.com"> <!-- Substitua pela URL do seu site -->
+  <meta property="og:type" content="website">
+  <title>Call of Cthulhu - A Mesa dos Antigos</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+
+    body {
+      background-color: #0f0f0f;
+      color: #d4d4d4;
+      font-family: 'Georgia', serif;
+      line-height: 1.6;
+    }
+    body.light-mode {
+    background-color: #f4ecd8; /* Cor de pergaminho */
+    color: #2f2f2f;
+  }
+  body.light-mode .navbar {
+    background-color: rgba(200, 170, 100, 0.9);
+  }
+  body.light-mode .profile-item {
+    background-color: #e6d9b7;
+    border-color: #8b4513;
+  }
+  body.light-mode .character-sheet {
+    background-color: #e6d9b7;
+    border-color: #8b4513;
+  }
+  body.light-mode .button {
+    background-color: #8b4513;
+  }
+  body.light-mode .button:hover {
+    background-color: #6b3a0d;
+  }
+  .timeline {
+    margin-left: 1rem;
+  }
+  .timeline-item {
+    position: relative;
+    padding-left: 1.5rem;
+  }
+  .timeline-dot {
+    transform: translateX(-50%);
+  }
+  .timeline-details {
+    transition: max-height 0.3s ease-out;
+    max-height: 0;
+    overflow: hidden;
+  }
+  .timeline-details.show {
+    max-height: 200px;
+  }
+  body.light-mode .timeline {
+    border-color: #8b4513;
+  }
+  body.light-mode .timeline-dot {
+    background-color: #8b4513;
+  }
+  body.light-mode #music-toggle {
+    background-color: #8b4513;
+  }
+  body.light-mode #music-toggle:hover {
+    background-color: #6b3a0d;
+  }
+  .character-sheet p {
+  margin: 10px 0; /* Mantém o espaçamento original dos parágrafos */
+}
+.pericia-input {
+  width: 60px; /* Tamanho compacto para o input */
+  margin-right: 5px; /* Espaço entre o input e os spans */
+}
+.half-value, .fifth-value {
+  margin-left: 10px; /* Espaço à esquerda dos valores calculados */
+  color: #af2d2d; /* Cor discreta para não destoar do design */
+}
+
+    .section {
+      min-height: 100vh;
+      padding: 4rem 2rem;
+      scroll-snap-align: start;
+      display: none;
+    }
+    .section.active {
+      display: block;
+    }
+    .navbar {
+      background-color: rgba(0, 20, 20, 0.9);
+      backdrop-filter: blur(10px);
+    }
+    .nav-link:hover {
+      color: #2ecc71;
+    }
+    .profile-item {
+      background-color: #1a1a1a;
+      border: 1px solid #2ecc71;
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+    .profile-item:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 0 15px rgba(46, 204, 113, 0.5);
+    }
+    .button {
+      background-color: #2ecc71;
+      transition: background-color 0.3s;
+    }
+    .button:hover {
+      background-color: #27ad5f;
+    }
+    .character-image {
+      width: 200px;
+      height: 200px;
+      object-fit: cover;
+      border: 2px solid #2ecc71;
+    }
+    .character-sheet {
+      background-color: #1a1a1a;
+      border: 1px solid #2ecc71;
+      padding: 1.5rem;
+      border-radius: 8px;
+    }
+    hr {
+      border-color: #2ecc71;
+    }
+  </style>
+</head>
+<body class="snap-y snap-mandatory">
+
+<header class="sticky top-0 z-50">
+  <div class="bg-teal-950 text-white text-center py-6">
+    <h1 class="text-4xl md:text-5xl font-bold flex items-center justify-center">
+      <img src="https://via.placeholder.com/40" alt="Símbolo Cthulhu" class="mr-2"> A Mesa dos Antigos
+    </h1>
+  </div>
+  <nav class="navbar flex justify-center gap-4 py-4" aria-label="Menu principal">
+    <a href="#inicio" class="nav-link text-white font-bold text-lg px-4 py-2">Início</a>
+    <a href="#mundo" class="nav-link text-white font-bold text-lg px-4 py-2">Mundo</a>
+    <a href="#historia" class="nav-link text-white font-bold text-lg px-4 py-2">História</a>
+    <a href="#personagens" class="nav-link text-white font-bold text-lg px-4 py-2">Personagens</a>
+    <a href="#bestiario" class="nav-link text-white font-bold text-lg px-4 py-2">Bestiário</a>
+    <a href="#pericias" class="nav-link text-white font-bold text-lg px-4 py-2">Perícias</a>
+    <a href="#contato" class="nav-link text-white font-bold text-lg px-4 py-2">Contato</a>
+    <button id="theme-toggle" class="button text-white px-4 py-2 rounded flex items-center gap-2">
+      <span>Alternar Tema</span>
+      <span class="theme-icon">🌙</span>
+    </button>
+  </nav>
+</header>
+
+<main>
+  <section id="inicio" class="section active bg-[url('https://i.imgur.com/cosmic_horror_background.jpg')] bg-cover bg-center">
+  <div class="max-w-4xl mx-auto text-center">
+    <h2 class="text-3xl md:text-4xl font-bold mb-4">Bem-vindo à Mesa dos Antigos</h2>
+    <h3 class="text-2xl md:text-3xl font-semibold mb-4">Uma Jornada ao Horror Cósmico</h3>
+    <p class="text-lg md:text-xl mb-4">
+      Alguma vez você já se perguntou o que se esconde além do véu da realidade? Nas sombras dos anos 1920, segredos sussurram sobre horrores antigos, esperando para serem despertados. Em Arkham, uma cidade envolta em névoa e mistério, a linha entre sanidade e loucura se torna tênue. Aqui, o Mythos de Cthulhu tece sua teia sombria, e apenas os mais corajosos — ou imprudentes — ousam desvendar seus segredos.
+    </p>
+    <p class="text-lg md:text-xl mb-4">
+      Mergulhe na rica tradição de nossa campanha, desde a história assombrada de Arkham até os relatos arrepiantes de investigadores que enfrentaram o incompreensível. Conheça os personagens que caminham no fio da navalha entre o conhecimento e a insanidade, e descubra as criaturas eldritch que espreitam nas sombras, à espera de seu momento para emergir.
+    </p>
+    <p class="text-lg md:text-xl mb-4">
+      Está pronto para confrontar o desconhecido? Comece sua jornada no coração do horror cósmico e descubra se você tem o que é preciso para sobreviver ao Mythos.
+    </p>
+    <a href="#mundo" class="button inline-block text-white px-4 py-2 rounded mt-4">Começar a Explorar</a>
+  </div>
+</section>
+
+  <section id="mundo" class="section">
+    <div class="max-w-4xl mx-auto">
+      <h2 class="text-3xl md:text-4xl font-bold mb-4">O Mundo</h2>
+      <p class="text-lg">
+        Nossa campanha se passa nos anos 1920, em uma Nova Inglaterra envolta em névoa e segredos. De Arkham a Innsmouth, os investigadores enfrentam cultos proibidos, manuscritos amaldiçoados e horrores que desafiam a compreensão humana. O Mythos de Cthulhu permeia cada esquina, e a verdade pode custar sua sanidade.
+      </p>
+    </div>
+  </section>
+
+  <section id="historia" class="section">
+   <div class="max-w-4xl mx-auto">
+    <h2 class="text-3xl md:text-4xl font-bold mb-4">História da Campanha</h2>
+    <p class="text-lg mb-4">
+      Tudo começou com um misterioso desaparecimento em Arkham. Abaixo, acompanhe os principais eventos da nossa campanha.
+    </p>
+    <div class="timeline relative border-l-4 border-[#2ecc71] pl-6">
+      <div class="timeline-item mb-8">
+        <div class="timeline-dot absolute w-4 h-4 bg-[#2ecc71] rounded-full -left-2 top-2"></div>
+        <h3 class="text-xl font-bold cursor-pointer" onclick="toggleTimelineDetails(this)">Sessão 1: O Desaparecimento</h3>
+        <p class="text-lg">Os investigadores descobrem pistas sobre o *Necronomicon*.</p>
+        <div class="timeline-details hidden mt-2 text-lg">
+          <p>Um bibliotecário desapareceu após consultar um tomo proibido na Miskatonic. A investigação revelou um culto em Innsmouth.</p>
+        </div>
+      </div>
+      <div class="timeline-item mb-8">
+        <div class="timeline-dot absolute w-4 h-4 bg-[#2ecc71] rounded-full -left-2 top-2"></div>
+        <h3 class="text-xl font-bold cursor-pointer" onclick="toggleTimelineDetails(this)">Sessão 2: O Culto</h3>
+        <p class="text-lg">Um ritual é interrompido, mas a sanidade é abalada.</p>
+        <div class="timeline-details hidden mt-2 text-lg">
+          <p>Os investigadores invadiram um armazém e interromperam um ritual, mas enfrentaram visões de uma entidade colossal.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  </section>
+
+  <section id="personagens" class="section">
+    <div class="max-w-4xl mx-auto">
+      <h2 class="text-3xl md:text-4xl font-bold mb-4">Personagens</h2>
+      <div class="profile grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div class="profile-item rounded-lg p-6 text-center">
+          <img src="https://via.placeholder.com/150" alt="Lucy" class="rounded-full mx-auto mb-4 w-32 h-32 object-cover">
+          <h3 class="text-xl font-bold">Lucy</h3>
+          <a href="#lucy" class="button inline-block text-white px-4 py-2 rounded mt-4">Sobre</a>
+        </div>
+        <div class="profile-item rounded-lg p-6 text-center">
+          <img src="https://via.placeholder.com/150" alt="Aldebaram" class="rounded-full mx-auto mb-4 w-32 h-32 object-cover">
+          <h3 class="text-xl font-bold">Aldebaram</h3>
+          <a href="#aldebaram" class="button inline-block text-white px-4 py-2 rounded mt-4">Sobre</a>
+        </div>
+        <div class="profile-item rounded-lg p-6 text-center">
+          <img src="https://via.placeholder.com/150" alt="Caelon" class="rounded-full mx-auto mb-4 w-32 h-32 object-cover">
+          <h3 class="text-xl font-bold">Caelon</h3>
+          <a href="#caelon" class="button inline-block text-white px-4 py-2 rounded mt-4">Sobre</a>
+        </div>
+        <div class="profile-item rounded-lg p-6 text-center">
+          <img src="https://via.placeholder.com/150" alt="Marco" class="rounded-full mx-auto mb-4 w-32 h-32 object-cover">
+          <h3 class="text-xl font-bold">Marco</h3>
+          <a href="#marco" class="button inline-block text-white px-4 py-2 rounded mt-4">Sobre</a>
+        </div>
+        <div class="profile-item rounded-lg p-6 text-center">
+          <img src="https://via.placeholder.com/150" alt="Edinaldo" class="rounded-full mx-auto mb-4 w-32 h-32 object-cover">
+          <h3 class="text-xl font-bold">Edinaldo</h3>
+          <a href="#edinaldo" class="button inline-block text-white px-4 py-2 rounded mt-4">Sobre</a>
+        </div>
+        <div class="profile-item rounded-lg p-6 text-center">
+          <img src="https://via.placeholder.com/150" alt="Jonnhy" class="rounded-full mx-auto mb-4 w-32 h-32 object-cover">
+          <h3 class="text-xl font-bold">Jonnhy</h3>
+          <a href="#jonnhy" class="button inline-block text-white px-4 py-2 rounded mt-4">Sobre</a>
+        </div>
+        <div class="profile-item rounded-lg p-6 text-center">
+          <img src="https://via.placeholder.com/150" alt="Aurora" class="rounded-full mx-auto mb-4 w-32 h-32 object-cover">
+          <h3 class="text-xl font-bold">Aurora</h3>
+          <a href="#aurora" class="button inline-block text-white px-4 py-2 rounded mt-4">Sobre</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="lucy" class="section">
+    <div class="max-w-4xl mx-auto">
+      <h2 class="text-3xl md:text-4xl font-bold mb-2">Lucy Carter</h2>
+      <div class="flex flex-col md:flex-row gap-6 mb-6">
+        <div>
+          <img src="https://via.placeholder.com/200" alt="Lucy Carter" class="character-image">
+        </div>
+        <div class="flex-1">
+          <h3 class="text-xl font-bold mb-2">Descrição</h3>
+          <p class="text-lg">
+            Lucy Carter, uma jornalista investigativa de Arkham, é movida pela busca incessante pela verdade. Suas reportagens sobre corrupção local a levaram a descobrir um culto em Innsmouth, desencadeando visões de uma cidade submersa e uma entidade colossal. Agora, ela luta para expor os segredos do Mythos enquanto tenta preservar sua sanidade.
+          </p>
+        </div>
+      </div>
+      <div class="character-sheet">
+        <h3 class="text-xl font-bold mb-4">Ficha do Investigador</h3>
+        <div class="mb-4">
+          <h4 class="text-lg font-bold">Informações do Investigador</h4>
+          <p><strong>Nome:</strong> Lucy Carter</p>
+          <p><strong>Ocupação:</strong> Jornalista Investigativa</p>
+          <p><strong>Idade:</strong> 32</p>
+          <p><strong>Residência:</strong> Arkham, Massachusetts</p>
+          <p><strong>Nascimento:</strong> 1893, Boston</p>
+        </div>
+        <hr class="border-t border-green-500 my-4">
+        <div class="mb-4">
+          <h4 class="text-lg font-bold">Características</h4>
+          <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
+            <p><strong>Força:</strong> 50</p>
+            <p><strong>Constituição:</strong> 55</p>
+            <p><strong>Tamanho:</strong> 50</p>
+            <p><strong>Destreza:</strong> 60</p>
+            <p><strong>Aparência:</strong> 65</p>
+            <p><strong>Inteligência:</strong> 70</p>
+            <p><strong>Poder:</strong> 60</p>
+            <p><strong>Educação:</strong> 75</p>
+          </div>
+        </div>
+        <hr class="border-t border-green-500 my-4">
+        <div class="mb-4">
+          <h4 class="text-lg font-bold">Atributos Derivados</h4>
+          <div class="grid grid-cols-2 sm:grid-cols-3 gap-4">
+            <p><strong>Sorte:</strong> 60</p>
+            <p><strong>Pontos de Vida:</strong> 11</p>
+            <p><strong>Pontos de Magia:</strong> 12</p>
+            <p><strong>Sanidade:</strong> 60</p>
+            <p><strong>Bônus de Dano:</strong> Nenhum</p>
+            <p><strong>Bônus de Físico:</strong> 0</p>
+          </div>
+        </div>
+        <hr class="border-t border-green-500 my-4">
+        <div class="mb-4">
+          <h4 class="text-lg font-bold">Perícias</h4>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <p><strong>Biblioteca:</strong>
+              <input type="number" class="pericia-input" value="70" min="0" max="100">%
+              <span class="half-value"></span>
+        '     <span class="fifth-value"></span>
+              </p>
+              <p><strong>Antropologia:</strong> 
+                
+              <input type="number" class="pericia-input" value="70" min="0" max="100">%
+              <span class="half-value"></span>
+        '     <span class="fifth-value"></span>
+              </p>
+              <p><strong>Escutar:</strong>
+              <input type="number" class="pericia-input" value="70" min="0" max="100">%
+              <span class="half-value"></span>
+        '     <span class="fifth-value"></span>
+              </p>
+              <p><strong>Fotografia:</strong>
+              <input type="number" class="pericia-input" value="70" min="0" max="100">%
+              <span class="half-value"></span>
+        '     <span class="fifth-value"></span>
+              </p>
+              <p><strong>História:</strong>
+              <input type="number" class="pericia-input" value="70" min="0" max="100">%
+              <span class="half-value"></span>
+        '     <span class="fifth-value"></span>
+              </p>
+              <p><strong>Observar:</strong>
+              <input type="number" class="pericia-input" value="70" min="0" max="100">%
+              <span class="half-value"></span>
+        '     <span class="fifth-value"></span>
+              </p>
+              <p><strong>Persuasão:</strong>
+              <input type="number" class="pericia-input" value="70" min="0" max="100">%
+              <span class="half-value"></span>
+        '     <span class="fifth-value"></span>
+              </p>
+              <p><strong>Psicologia:</strong>
+              <input type="number" class="pericia-input" value="70" min="0" max="100">%
+              <span class="half-value"></span>
+        '     <span class="fifth-value"></span>
+              </p>
+            </div>
+            <div>
+              <p><strong>Arqueologia:</strong>
+              <input type="number" class="pericia-input" value="70" min="0" max="100">%
+              <span class="half-value"></span>
+        '     <span class="fifth-value"></span>
+              </p>
+              <p><strong>Condução:</strong>
+              <input type="number" class="pericia-input" value="70" min="0" max="100">%
+              <span class="half-value"></span>
+        '     <span class="fifth-value"></span>
+              </p>
+              <p><strong>Falar Rápido:</strong>
+              <input type="number" class="pericia-input" value="70" min="0" max="100">%
+              <span class="half-value"></span>
+        '     <span class="fifth-value"></span>
+              </p>
+              <p><strong>Furtividade:</strong>
+              <input type="number" class="pericia-input" value="70" min="0" max="100">%
+              <span class="half-value"></span>
+        '     <span class="fifth-value"></span>
+              </p>
+              <p><strong>Intimidação:</strong>
+              <input type="number" class="pericia-input" value="70" min="0" max="100">%
+              <span class="half-value"></span>
+        '     <span class="fifth-value"></span>
+              </p>
+              <p><strong>Língua (Inglês):</strong>
+              <input type="number" class="pericia-input" value="70" min="0" max="100">%
+              <span class="half-value"></span>
+        '     <span class="fifth-value"></span>
+              </p>
+              <p><strong>Ocultismo:</strong>
+              <input type="number" class="pericia-input" value="70" min="0" max="100">%
+              <span class="half-value"></span>
+        '     <span class="fifth-value"></span>
+              </p>
+              <p><strong>Primeiros Socorros:</strong>
+              <input type="number" class="pericia-input" value="70" min="0" max="100">%
+              <span class="half-value"></span>
+        '     <span class="fifth-value"></span>
+              </p>
+            </div>
+          </div>
+        </div>
+        <hr class="border-t border-green-500 my-4">
+        <div class="mb-4">
+          <h4 class="text-lg font-bold">Antecedentes</h4>
+          <p><strong>Descrição:</strong> Uma mulher determinada, com olhos atentos e um caderno sempre à mão.</p>
+          <p><strong>Ideologia/Crenças:</strong> A verdade deve ser revelada, custe o que custar.</p>
+          <p><strong>Pessoas Significativas:</strong> Editor do Arkham Gazette, seu mentor jornalístico.</p>
+          <p><strong>Lugares Significativos:</strong> Redação do Arkham Gazette.</p>
+          <p><strong>Objetos Valiosos:</strong> Caderno de anotações com pistas sobre o Mythos.</p>
+          <p><strong>Características:</strong> Curiosa, obstinada.</p>
+          <p><strong>Traumas:</strong> Visões perturbadoras após ler um manuscrito.</p>
+          <p><strong>Fobias/Manias:</strong> Medo de espelhos à noite.</p>
+          <p><strong>Grimórios/Feitiços:</strong> Nenhum.</p>
+          <p><strong>Encontros com o Mythos:</strong> Visão de uma cidade submersa.</p>
+        </div>
+        <hr class="border-t border-green-500 my-4">
+        <div class="mb-4">
+          <h4 class="text-lg font-bold">Equipamentos e Finanças</h4>
+          <p><strong>Posse:</strong> Câmera fotográfica, caderno, caneta-tinteiro.</p>
+          <p><strong>Gastos:</strong> $10/semana (aluguel, suprimentos).</p>
+          <p><strong>Dinheiro em Mãos:</strong> $50</p>
+          <p><strong>Ativos:</strong> Apartamento alugado em Arkham.</p>
+        </div>
+      </div>
+      <a href="#personagens" class="button inline-block text-white px-4 py-2 rounded mt-6">Voltar</a>
+    </div>
+  </section>
+
+  <section id="aldebaram" class="section">
+    <div class="max-w-4xl mx-auto">
+      <h2 class="text-3xl md:text-4xl font-bold mb-2">Aldebaram</h2>
+      <div class="flex flex-col md:flex-row gap-6 mb-6">
+        <div>
+          <img src="https://via.placeholder.com/200" alt="Aldebaram" class="character-image">
+        </div>
+        <div class="flex-1">
+          <h3 class="text-xl font-bold mb-2">Descrição</h3>
+          <p class="text-lg">
+            Aldebaram, um arqueólogo excêntrico, dedica-se a desvendar os mistérios dos artefatos antigos. Sua obsessão por ruínas esquecidas o levou a descobrir inscrições que sugerem a presença de entidades do Mythos, colocando-o em um caminho perigoso.
+          </p>
+        </div>
+      </div>
+      <div class="character-sheet">
+        <h3 class="text-xl font-bold mb-4">Ficha do Investigador</h3>
+        <div class="mb-4">
+          <h4 class="text-lg font-bold">Informações do Investigador</h4>
+          <p><strong>Nome:</strong> Aldebaram</p>
+          <p><strong>Ocupação:</strong> Arqueólogo</p>
+          <p><strong>Idade:</strong> 45</p>
+          <p><strong>Residência:</strong> Providence, Rhode Island</p>
+          <p><strong>Nascimento:</strong> 1880, Londres</p>
+        </div>
+        <hr class="border-t border-green-500 my-4">
+        <div class="mb-4">
+          <h4 class="text-lg font-bold">Características</h4>
+          <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
+            <p><strong>Força:</strong> 50</p>
+            <p><strong>Constituição:</strong> 60</p>
+            <p><strong>Tamanho:</strong> 55</p>
+            <p><strong>Destreza:</strong> 50</p>
+            <p><strong>Aparência:</strong> 40</p>
+            <p><strong>Inteligência:</strong> 80</p>
+            <p><strong>Poder:</strong> 55</p>
+            <p><strong>Educação:</strong> 85</p>
+          </div>
+        </div>
+        <hr class="border-t border-green-500 my-4">
+        <div class="mb-4">
+          <h4 class="text-lg font-bold">Atributos Derivados</h4>
+          <div class="grid grid-cols-2 sm:grid-cols-3 gap-4">
+            <p><strong>Sorte:</strong> 55</p>
+            <p><strong>Pontos de Vida:</strong> 12</p>
+            <p><strong>Pontos de Magia:</strong> 11</p>
+            <p><strong>Sanidade:</strong> 55</p>
+            <p><strong>Bônus de Dano:</strong> Nenhum</p>
+            <p><strong>Bônus de Físico:</strong> 0</p>
+          </div>
+        </div>
+        <hr class="border-t border-green-500 my-4">
+        <div class="mb-4">
+          <h4 class="text-lg font-bold">Perícias</h4>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <p><strong>Arqueologia:</strong>
+              <input type="number" class="pericia-input" value="70" min="0" max="100">%
+              <span class="half-value"></span>
+        '     <span class="fifth-value"></span>
+              </p>
+              <p><strong>Antropologia:</strong>
+              <input type="number" class="pericia-input" value="70" min="0" max="100">%
+              <span class="half-value"></span>
+        '     <span class="fifth-value"></span>
+              </p>
+              <p><strong>Biblioteca:</strong>
+              <input type="number" class="pericia-input" value="70" min="0" max="100">%
+              <span class="half-value"></span>
+        '     <span class="fifth-value"></span>
+              </p>
+              <p><strong>História:</strong>
+              <input type="number" class="pericia-input" value="70" min="0" max="100">%
+              <span class="half-value"></span>
+        '     <span class="fifth-value"></span>
+              </p>
+              <p><strong>Observar:</strong>
+              <input type="number" class="pericia-input" value="70" min="0" max="100">%
+              <span class="half-value"></span>
+        '     <span class="fifth-value"></span>
+              </p>
+              <p><strong>Escalar:</strong>
+              <input type="number" class="pericia-input" value="70" min="0" max="100">%
+              <span class="half-value"></span>
+        '     <span class="fifth-value"></span>
+              </p>
+              <p><strong>Primeiros Socorros:</strong>
+              <input type="number" class="pericia-input" value="70" min="0" max="100">%
+              <span class="half-value"></span>
+        '     <span class="fifth-value"></span>
+              </p>
+              <p><strong>Ocultismo:</strong>
+              <input type="number" class="pericia-input" value="70" min="0" max="100">%
+              <span class="half-value"></span>
+        '     <span class="fifth-value"></span>
+              </p>
+            </div>
+            <div>
+              <p><strong>Arremesso:</strong>
+              <input type="number" class="pericia-input" value="70" min="0" max="100">%
+              <span class="half-value"></span>
+        '     <span class="fifth-value"></span>
+              </p>
+              <p><strong>Condução:</strong>
+              <input type="number" class="pericia-input" value="70" min="0" max="100">%
+              <span class="half-value"></span>
+        '     <span class="fifth-value"></span>
+              </p>
+              <p><strong>Escutar:</strong>
+              <input type="number" class="pericia-input" value="70" min="0" max="100">%
+              <span class="half-value"></span>
+        '     <span class="fifth-value"></span>
+              </p>
+              <p><strong>Furtividade:</strong>
+              <input type="number" class="pericia-input" value="70" min="0" max="100">%
+              <span class="half-value"></span>
+        '     <span class="fifth-value"></span>
+              </p>
+              <p><strong>Língua (Inglês):</strong>
+              <input type="number" class="pericia-input" value="70" min="0" max="100">%
+              <span class="half-value"></span>
+        '     <span class="fifth-value"></span>
+              </p>
+              <p><strong>Língua (Latim):</strong>
+              <input type="number" class="pericia-input" value="70" min="0" max="100">%
+              <span class="half-value"></span>
+        '     <span class="fifth-value"></span>
+              </p>
+              <p><strong>Navegação:</strong>
+              <input type="number" class="pericia-input" value="70" min="0" max="100">%
+              <span class="half-value"></span>
+        '     <span class="fifth-value"></span>
+              </p>
+              <p><strong>Sobrevivência:</strong>
+              <input type="number" class="pericia-input" value="70" min="0" max="100">%
+              <span class="half-value"></span>
+        '     <span class="fifth-value"></span>
+              </p>
+            </div>
+          </div>
+        </div>
+        <hr class="border-t border-green-500 my-4">
+        <div class="mb-4">
+          <h4 class="text-lg font-bold">Antecedentes</h4>
+          <p><strong>Descrição:</strong> Um homem idoso com óculos e uma pasta cheia de notas.</p>
+          <p><strong>Ideologia/Crenças:</strong> O conhecimento é poder, mesmo que perigoso.</p>
+          <p><strong>Pessoas Significativas:</strong> Seu mentor na universidade.</p>
+          <p><strong>Lugares Significativos:</strong> Ruínas de uma escavação em Yucatán.</p>
+          <p><strong>Objetos Valiosos:</strong> Diário com traduções de hieróglifos.</p>
+          <p><strong>Características:</strong> Curioso, meticuloso.</p>
+          <p><strong>Traumas:</strong> Pesadelos com entidades antigas.</p>
+          <p><strong>Fobias/Manias:</strong> Medo de lugares confinados.</p>
+          <p><strong>Grimórios/Feitiços:</strong> Fragmento do *Necronomicon*.</p>
+          <p><strong>Encontros com o Mythos:</strong> Descoberta de um altar em ruínas.</p>
+        </div>
+        <hr class="border-t border-green-500 my-4">
+        <div class="mb-4">
+          <h4 class="text-lg font-bold">Equipamentos e Finanças</h4>
+          <p><strong>Posse:</strong> Escova de escavação, lanterna, mapa antigo.</p>
+          <p><strong>Gastos:</strong> $15/semana (viagens, suprimentos).</p>
+          <p><strong>Dinheiro em Mãos:</strong> $70</p>
+          <p><strong>Ativos:</strong> Casa em Providence.</p>
+        </div>
+      </div>
+      <a href="#personagens" class="button inline-block text-white px-4 py-2 rounded mt-6">Voltar</a>
+    </div>
+  </section>
+
+  <section id="caelon" class="section">
+    <div class="max-w-4xl mx-auto">
+      <h2 class="text-3xl md:text-4xl font-bold mb-2">Caelon</h2>
+      <div class="flex flex-col md:flex-row gap-6 mb-6">
+        <div>
+          <img src="https://via.placeholder.com/200" alt="Caelon" class="character-image">
+        </div>
+        <div class="flex-1">
+          <h3 class="text-xl font-bold mb-2">Descrição</h3>
+          <p class="text-lg">
+            Caelon, um detetive privado de Boston, usa sua astúcia para resolver casos sombrios. Recentemente, foi contratado para investigar um assassinato que o levou a pistas ligadas a um culto, desafiando sua percepção da realidade.
+          </p>
+        </div>
+      </div>
+      <div class="character-sheet">
+        <h3 class="text-xl font-bold mb-4">Ficha do Investigador</h3>
+        <div class="mb-4">
+          <h4 class="text-lg font-bold">Informações do Investigador</h4>
+          <p><strong>Nome:</strong> Caelon</p>
+          <p><strong>Ocupação:</strong> Detetive Privado</p>
+          <p><strong>Idade:</strong> 38</p>
+          <p><strong>Residência:</strong> Boston, Massachusetts</p>
+          <p><strong>Nascimento:</strong> 1887, Nova York</p>
+        </div>
+        <hr class="border-t border-green-500 my-4">
+        <div class="mb-4">
+          <h4 class="text-lg font-bold">Características</h4>
+          <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
+            <p><strong>Força:</strong> 60</p>
+            <p><strong>Constituição:</strong> 65</p>
+            <p><strong>Tamanho:</strong> 60</p>
+            <p><strong>Destreza:</strong> 70</p>
+            <p><strong>Aparência:</strong> 50</p>
+            <p><strong>Inteligência:</strong> 65</p>
+            <p><strong>Poder:</strong> 50</p>
+            <p><strong>Educação:</strong> 60</p>
+          </div>
+        </div>
+        <hr class="border-t border-green-500 my-4">
+        <div class="mb-4">
+          <h4 class="text-lg font-bold">Atributos Derivados</h4>
+          <div class="grid grid-cols-2 sm:grid-cols-3 gap-4">
+            <p><strong>Sorte:</strong> 50</p>
+            <p><strong>Pontos de Vida:</strong> 13</p>
+            <p><strong>Pontos de Magia:</strong> 10</p>
+            <p><strong>Sanidade:</strong> 50</p>
+            <p><strong>Bônus de Dano:</strong> +1D4</p>
+            <p><strong>Bônus de Físico:</strong> 1</p>
+          </div>
+        </div>
+        <hr class="border-t border-green-500 my-4">
+        <div class="mb-4">
+          <h4 class="text-lg font-bold">Perícias</h4>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <p><strong>Observar:</strong>
+              <input type="number" class="pericia-input" value="70" min="0" max="100">%
+              <span class="half-value"></span>
+        '     <span class="fifth-value"></span>
+              </p>
+              <p><strong>Escutar:</strong> 
+              <input type="number" class="pericia-input" value="70" min="0" max="100">%
+              <span class="half-value"></span>
+        '     <span class="fifth-value"></span>
+              </p>
+              <p><strong>Psicologia:</strong>
+              <input type="number" class="pericia-input" value="70" min="0" max="100">%
+              <span class="half-value"></span>
+        '     <span class="fifth-value"></span>
+              </p>
+              <p><strong>Persuasão:</strong>
+              <input type="number" class="pericia-input" value="70" min="0" max="100">%
+              <span class="half-value"></span>
+        '     <span class="fifth-value"></span>
+              </p>
+              <p><strong>Briga:</strong>
+              <input type="number" class="pericia-input" value="70" min="0" max="100">%
+              <span class="half-value"></span>
+        '     <span class="fifth-value"></span>
+              </p>
+              <p><strong>Esquivar:</strong>
+              <input type="number" class="pericia-input" value="70" min="0" max="100">%
+              <span class="half-value"></span>
+        '     <span class="fifth-value"></span>
+              </p>
+              <p><strong>Rastrear:</strong>
+              <input type="number" class="pericia-input" value="70" min="0" max="100">%
+              <span class="half-value"></span>
+        '     <span class="fifth-value"></span>
+              </p>
+              <p><strong>Primeiros Socorros:</strong>
+              <input type="number" class="pericia-input" value="70" min="0" max="100">%
+              <span class="half-value"></span>
+        '     <span class="fifth-value"></span>
+              </p>
+            </div>
+            <div>
+              <p><strong>Armas de Fogo (Pistolas):</strong>
+              <input type="number" class="pericia-input" value="70" min="0" max="100">%
+              <span class="half-value"></span>
+        '     <span class="fifth-value"></span>
+              </p>
+              <p><strong>Condução:</strong>
+              <input type="number" class="pericia-input" value="70" min="0" max="100">%
+              <span class="half-value"></span>
+        '     <span class="fifth-value"></span>
+              </p>
+              <p><strong>Disfarçar:</strong>
+              <input type="number" class="pericia-input" value="70" min="0" max="100">%
+              <span class="half-value"></span>
+        '     <span class="fifth-value"></span>
+              </p>
+              <p><strong>Intimidação:</strong>
+              <input type="number" class="pericia-input" value="70" min="0" max="100">%
+              <span class="half-value"></span>
+        '     <span class="fifth-value"></span>
+              </p>
+              <p><strong>Direito:</strong> 
+              <input type="number" class="pericia-input" value="70" min="0" max="100">%
+              <span class="half-value"></span>
+        '     <span class="fifth-value"></span>
+              </p>
+              <p><strong>Língua (Inglês):</strong>
+              <input type="number" class="pericia-input" value="70" min="0" max="100">%
+              <span class="half-value"></span>
+        '     <span class="fifth-value"></span>
+              </p>
+              <p><strong>Ocultismo:</strong>
+              <input type="number" class="pericia-input" value="70" min="0" max="100">%
+              <span class="half-value"></span>
+        '     <span class="fifth-value"></span>
+              </p>
+              <p><strong>Furtividade:</strong>
+              <input type="number" class="pericia-input" value="70" min="0" max="100">%
+              <span class="half-value"></span>
+        '     <span class="fifth-value"></span>
+              </p>
+            </div>
+          </div>
+        </div>
+        <hr class="border-t border-green-500 my-4">
+        <div class="mb-4">
+          <h4 class="text-lg font-bold">Antecedentes</h4>
+          <p><strong>Descrição:</strong> Um homem de casaco longo e olhar penetrante.</p>
+          <p><strong>Ideologia/Crenças:</strong> Justiça acima de tudo, mesmo que obscura.</p>
+          <p><strong>Pessoas Significativas:</strong> Seu parceiro policial aposentado.</p>
+          <p><strong>Lugares Significativos:</strong> Escritório em Boston.</p>
+          <p><strong>Objetos Valiosos:</strong> Revólver de família.</p>
+          <p><strong>Características:</strong> Perspicaz, teimoso.</p>
+          <p><strong>Traumas:</strong> Memórias de um caso não resolvido.</p>
+          <p><strong>Fobias/Manias:</strong> Medo de multidões.</p>
+          <p><strong>Grimórios/Feitiços:</strong> Nenhum.</p>
+          <p><strong>Encontros com o Mythos:</strong> Testemunhou um ritual falho.</p>
+        </div>
+        <hr class="border-t border-green-500 my-4">
+        <div class="mb-4">
+          <h4 class="text-lg font-bold">Equipamentos e Finanças</h4>
+          <p><strong>Posse:</strong> Revólver, caderno de anotações, lanterna.</p>
+          <p><strong>Gastos:</strong> $12/semana (escritório, transporte).</p>
+          <p><strong>Dinheiro em Mãos:</strong> $60</p>
+          <p><strong>Ativos:</strong> Apartamento em Boston.</p>
+        </div>
+      </div>
+      <a href="#personagens" class="button inline-block text-white px-4 py-2 rounded mt-6">Voltar</a>
+    </div>
+  </section>
+
+  <section id="marco" class="section">
+    <div class="max-w-4xl mx-auto">
+      <h2 class="text-3xl md:text-4xl font-bold mb-2">Marco</h2>
+      <div class="flex flex-col md:flex-row gap-6 mb-6">
+        <div>
+          <img src="https://via.placeholder.com/200" alt="Marco" class="character-image">
+        </div>
+        <div class="flex-1">
+          <h3 class="text-xl font-bold mb-2">Descrição</h3>
+          <p class="text-lg">
+            Marco, um médico de Arkham, usa seus conhecimentos para ajudar os feridos, mas sua curiosidade o arrastou para experimentos proibidos que o conectaram ao Mythos.
+          </p>
+        </div>
+      </div>
+      <div class="character-sheet">
+        <h3 class="text-xl font-bold mb-4">Ficha do Investigador</h3>
+        <div class="mb-4">
+          <h4 class="text-lg font-bold">Informações do Investigador</h4>
+          <p><strong>Nome:</strong> Marco</p>
+          <p><strong>Ocupação:</strong> Médico</p>
+          <p><strong>Idade:</strong> 40</p>
+          <p><strong>Residência:</strong> Arkham, Massachusetts</p>
+          <p><strong>Nascimento:</strong> 1885, Filadélfia</p>
+        </div>
+        <hr class="border-t border-green-500 my-4">
+        <div class="mb-4">
+          <h4 class="text-lg font-bold">Características</h4>
+          <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
+            <p><strong>Força:</strong> 50</p>
+            <p><strong>Constituição:</strong> 60</p>
+            <p><strong>Tamanho:</strong> 55</p>
+            <p><strong>Destreza:</strong> 50</p>
+            <p><strong>Aparência:</strong> 45</p>
+            <p><strong>Inteligência:</strong> 70</p>
+            <p><strong>Poder:</strong> 65</p>
+            <p><strong>Educação:</strong> 80</p>
+          </div>
+        </div>
+        <hr class="border-t border-green-500 my-4">
+        <div class="mb-4">
+          <h4 class="text-lg font-bold">Atributos Derivados</h4>
+          <div class="grid grid-cols-2 sm:grid-cols-3 gap-4">
+            <p><strong>Sorte:</strong> 65</p>
+            <p><strong>Pontos de Vida:</strong> 12</p>
+            <p><strong>Pontos de Magia:</strong> 13</p>
+            <p><strong>Sanidade:</strong> 65</p>
+            <p><strong>Bônus de Dano:</strong> Nenhum</p>
+            <p><strong>Bônus de Físico:</strong> 0</p>
+          </div>
+        </div>
+        <hr class="border-t border-green-500 my-4">
+        <div class="mb-4">
+          <h4 class="text-lg font-bold">Perícias</h4>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <p><strong>Medicina:</strong>
+              <input type="number" class="pericia-input" value="70" min="0" max="100">%
+              <span class="half-value"></span>
+        '     <span class="fifth-value"></span>
+              </p>
+              <p><strong>Primeiros Socorros:</strong>
+              <input type="number" class="pericia-input" value="70" min="0" max="100">%
+              <span class="half-value"></span>
+        '     <span class="fifth-value"></span>
+              </p>
+              <p><strong>Ciência (Farmacia):</strong>
+              <input type="number" class="pericia-input" value="70" min="0" max="100">%
+              <span class="half-value"></span>
+        '     <span class="fifth-value"></span>
+              </p>
+              <p><strong>Observar:</strong>
+              <input type="number" class="pericia-input" value="70" min="0" max="100">%
+              <span class="half-value"></span>
+        '     <span class="fifth-value"></span>
+              </p>
+              <p><strong>Psicologia:</strong> 
+              <input type="number" class="pericia-input" value="70" min="0" max="100">%
+              <span class="half-value"></span>
+        '     <span class="fifth-value"></span>
+              </p>
+              <p><strong>Escutar:</strong> 
+              <input type="number" class="pericia-input" value="70" min="0" max="100">%
+              <span class="half-value"></span>
+        '     <span class="fifth-value"></span>
+              </p>
+              <p><strong>Persuasão:</strong> 
+              <input type="number" class="pericia-input" value="70" min="0" max="100">%
+              <span class="half-value"></span>
+        '     <span class="fifth-value"></span>
+              </p>
+              <p><strong>História:</strong>
+              <input type="number" class="pericia-input" value="70" min="0" max="100">%
+              <span class="half-value"></span>
+        '     <span class="fifth-value"></span>
+              </p>
+            </div>
+            <div>
+              <p><strong>Ciência (Biologia):</strong> 
+              <input type="number" class="pericia-input" value="70" min="0" max="100">%
+              <span class="half-value"></span>
+        '     <span class="fifth-value"></span>
+              </p>
+              <p><strong>Condução:</strong>
+              <input type="number" class="pericia-input" value="70" min="0" max="100">%
+              <span class="half-value"></span>
+        '     <span class="fifth-value"></span>
+              </p>
+              <p><strong>Disfarçar:</strong>
+              <input type="number" class="pericia-input" value="70" min="0" max="100">%
+              <span class="half-value"></span>
+        '     <span class="fifth-value"></span>
+              </p>
+              <p><strong>Eletrônica:</strong> 
+              <input type="number" class="pericia-input" value="70" min="0" max="100">%
+              <span class="half-value"></span>
+        '     <span class="fifth-value"></span>
+              </p>
+              <p><strong>Língua (Inglês):</strong>
+              <input type="number" class="pericia-input" value="70" min="0" max="100">%
+              <span class="half-value"></span>
+        '     <span class="fifth-value"></span>
+              </p>
+              <p><strong>Língua (Latim):</strong>
+              <input type="number" class="pericia-input" value="70" min="0" max="100">%
+              <span class="half-value"></span>
+        '     <span class="fifth-value"></span>
+              </p>
+              <p><strong>Ocultismo:</strong>
+              <input type="number" class="pericia-input" value="70" min="0" max="100">%
+              <span class="half-value"></span>
+        '     <span class="fifth-value"></span>
+              </p>
+              <p><strong>Briga:</strong>
+              <input type="number" class="pericia-input" value="70" min="0" max="100">%
+              <span class="half-value"></span>
+        '     <span class="fifth-value"></span>
+              </p>
+            </div>
+          </div>
+        </div>
+        <hr class="border-t border-green-500 my-4">
+        <div class="mb-4">
+          <h4 class="text-lg font-bold">Antecedentes</h4>
+          <p><strong>Descrição:</strong> Um homem de jaleco branco com mãos firmes.</p>
+          <p><strong>Ideologia/Crenças:</strong> Salvar vidas, mesmo às custas da moral.</p>
+          <p><strong>Pessoas Significativas:</strong> Seu assistente médico.</p>
+          <p><strong>Lugares Significativos:</strong> Hospital de Arkham.</p>
+          <p><strong>Objetos Valiosos:</strong> Estojo de instrumentos cirúrgicos.</p>
+          <p><strong>Características:</strong> Calmo, analítico.</p>
+          <p><strong>Traumas:</strong> Experimentos falhos em pacientes.</p>
+          <p><strong>Fobias/Manias:</strong> Medo de sangue escuro.</p>
+          <p><strong>Grimórios/Feitiços:</strong> Nenhum.</p>
+          <p><strong>Encontros com o Mythos:</strong> Descoberta de um livro proibido.</p>
+        </div>
+        <hr class="border-t border-green-500 my-4">
+        <div class="mb-4">
+          <h4 class="text-lg font-bold">Equipamentos e Finanças</h4>
+          <p><strong>Posse:</strong> Estojo cirúrgico, lanterna, livro médico.</p>
+          <p><strong>Gastos:</strong> $20/semana (consultório, suprimentos).</p>
+          <p><strong>Dinheiro em Mãos:</strong> $80</p>
+          <p><strong>Ativos:</strong> Consultório em Arkham.</p>
+        </div>
+      </div>
+      <a href="#personagens" class="button inline-block text-white px-4 py-2 rounded mt-6">Voltar</a>
+    </div>
+  </section>
+
+  <section id="edinaldo" class="section">
+    <div class="max-w-4xl mx-auto">
+      <h2 class="text-3xl md:text-4xl font-bold mb-2">Edinaldo</h2>
+      <div class="flex flex-col md:flex-row gap-6 mb-6">
+        <div>
+          <img src="https://via.placeholder.com/200" alt="Edinaldo" class="character-image">
+        </div>
+        <div class="flex-1">
+          <h3 class="text-xl font-bold mb-2">Descrição</h3>
+          <p class="text-lg">
+            Edinaldo, um marinheiro experiente, navegou por mares estranhos e enfrentou criaturas que desafiam a lógica. Seu passado o conecta a lendas de Innsmouth.
+          </p>
+        </div>
+      </div>
+      <div class="character-sheet">
+        <h3 class="text-xl font-bold mb-4">Ficha do Investigador</h3>
+        <div class="mb-4">
+          <h4 class="text-lg font-bold">Informações do Investigador</h4>
+          <p><strong>Nome:</strong> Edinaldo</p>
+          <p><strong>Ocupação:</strong> Marinheiro</p>
+          <p><strong>Idade:</strong> 35</p>
+          <p><strong>Residência:</strong> Innsmouth, Massachusetts</p>
+          <p><strong>Nascimento:</strong> 1890, Porto Seguro</p>
+        </div>
+        <hr class="border-t border-green-500 my-4">
+        <div class="mb-4">
+          <h4 class="text-lg font-bold">Características</h4>
+          <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
+            <p><strong>Força:</strong> 70</p>
+            <p><strong>Constituição:</strong> 65</p>
+            <p><strong>Tamanho:</strong> 60</p>
+            <p><strong>Destreza:</strong> 55</p>
+            <p><strong>Aparência:</strong> 45</p>
+            <p><strong>Inteligência:</strong> 50</p>
+            <p><strong>Poder:</strong> 45</p>
+            <p><strong>Educação:</strong> 40</p>
+          </div>
+        </div>
+        <hr class="border-t border-green-500 my-4">
+        <div class="mb-4">
+          <h4 class="text-lg font-bold">Atributos Derivados</h4>
+          <div class="grid grid-cols-2 sm:grid-cols-3 gap-4">
+            <p><strong>Sorte:</strong> 45</p>
+            <p><strong>Pontos de Vida:</strong> 13</p>
+            <p><strong>Pontos de Magia:</strong> 9</p>
+            <p><strong>Sanidade:</strong> 45</p>
+            <p><strong>Bônus de Dano:</strong> +1D4</p>
+            <p><strong>Bônus de Físico:</strong> 1</p>
+          </div>
+        </div>
+        <hr class="border-t border-green-500 my-4">
+        <div class="mb-4">
+          <h4 class="text-lg font-bold">Perícias</h4>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <p><strong>Navegação:</strong>
+              <input type="number" class="pericia-input" value="70" min="0" max="100">%
+              <span class="half-value"></span>
+        '     <span class="fifth-value"></span>
+              </p>
+              <p><strong>Natação:</strong>
+              <input type="number" class="pericia-input" value="70" min="0" max="100">%
+              <span class="half-value"></span>
+        '     <span class="fifth-value"></span>
+              </p>
+              <p><strong>Briga:</strong>
+              <input type="number" class="pericia-input" value="70" min="0" max="100">%
+              <span class="half-value"></span>
+        '     <span class="fifth-value"></span>
+              </p>
+              <p><strong>Arremesso:</strong>
+              <input type="number" class="pericia-input" value="70" min="0" max="100">%
+              <span class="half-value"></span>
+        '     <span class="fifth-value"></span>
+              </p>
+              <p><strong>Escalar:</strong>
+              <input type="number" class="pericia-input" value="70" min="0" max="100">%
+              <span class="half-value"></span>
+        '     <span class="fifth-value"></span>
+              </p>
+              <p><strong>Sobrevivência:</strong>
+              <input type="number" class="pericia-input" value="70" min="0" max="100">%
+              <span class="half-value"></span>
+        '     <span class="fifth-value"></span>
+              </p>
+              <p><strong>Observar:</strong>
+              <input type="number" class="pericia-input" value="70" min="0" max="100">%
+              <span class="half-value"></span>
+        '     <span class="fifth-value"></span>
+              </p>
+              <p><strong>Primeiros Socorros:</strong>
+              <input type="number" class="pericia-input" value="70" min="0" max="100">%
+              <span class="half-value"></span>
+        '     <span class="fifth-value"></span>
+              </p>
+            </div>
+            <div>
+              <p><strong>Armas de Fogo (Rifles):</strong>
+              <input type="number" class="pericia-input" value="70" min="0" max="100">%
+              <span class="half-value"></span>
+        '     <span class="fifth-value"></span>
+              </p>
+              <p><strong>Condução:</strong>
+              <input type="number" class="pericia-input" value="70" min="0" max="100">%
+              <span class="half-value"></span>
+        '     <span class="fifth-value"></span>
+              </p>
+              <p><strong>Escutar:</strong>
+              <input type="number" class="pericia-input" value="70" min="0" max="100">%
+              <span class="half-value"></span>
+        '     <span class="fifth-value"></span>
+              </p>
+              <p><strong>Furtividade:</strong>
+              <input type="number" class="pericia-input" value="70" min="0" max="100">%
+              <span class="half-value"></span>
+        '     <span class="fifth-value"></span>
+              </p>
+              <p><strong>Língua (Inglês):</strong>
+              <input type="number" class="pericia-input" value="70" min="0" max="100">%
+              <span class="half-value"></span>
+        '     <span class="fifth-value"></span>
+              </p>
+              <p><strong>Língua (Português):</strong>
+              <input type="number" class="pericia-input" value="70" min="0" max="100">%
+              <span class="half-value"></span>
+        '     <span class="fifth-value"></span>
+              </p>
+              <p><strong>Manejar:</strong>
+              <input type="number" class="pericia-input" value="70" min="0" max="100">%
+              <span class="half-value"></span>
+        '     <span class="fifth-value"></span>
+              </p>
+              <p><strong>Rastrear:</strong>
+              <input type="number" class="pericia-input" value="70" min="0" max="100">%
+              <span class="half-value"></span>
+        '     <span class="fifth-value"></span>
+              </p>
+            </div>
+          </div>
+        </div>
+        <hr class="border-t border-green-500 my-4">
+        <div class="mb-4">
+          <h4 class="text-lg font-bold">Antecedentes</h4>
+          <p><strong>Descrição:</strong> Um homem robusto com pele curtida pelo sal.</p>
+          <p><strong>Ideologia/Crenças:</strong> O mar guarda segredos que devem ser respeitados.</p>
+          <p><strong>Pessoas Significativas:</strong> Seu capitão de navio.</p>
+          <p><strong>Lugares Significativos:</strong> Porto de Innsmouth.</p>
+          <p><strong>Objetos Valiosos:</strong> Compasso antigo.</p>
+          <p><strong>Características:</strong> Resiliente, supersticioso.</p>
+          <p><strong>Traumas:</strong> Encontro com uma criatura marinha.</p>
+          <p><strong>Fobias/Manias:</strong> Medo de águas profundas.</p>
+          <p><strong>Grimórios/Feitiços:</strong> Nenhum.</p>
+          <p><strong>Encontros com o Mythos:</strong> Visão de um Deep One.</p>
+        </div>
+        <hr class="border-t border-green-500 my-4">
+        <div class="mb-4">
+          <h4 class="text-lg font-bold">Equipamentos e Finanças</h4>
+          <p><strong>Posse:</strong> Corda, faca, mapa náutico.</p>
+          <p><strong>Gastos:</strong> $10/semana (comida, reparos).</p>
+          <p><strong>Dinheiro em Mãos:</strong> $40</p>
+          <p><strong>Ativos:</strong> Pequeno barco de pesca.</p>
+        </div>
+      </div>
+      <a href="#personagens" class="button inline-block text-white px-4 py-2 rounded mt-6">Voltar</a>
+    </div>
+  </section>
+
+  <section id="jonnhy" class="section">
+    <div class="max-w-4xl mx-auto">
+      <h2 class="text-3xl md:text-4xl font-bold mb-2">Jonnhy</h2>
+      <div class="flex flex-col md:flex-row gap-6 mb-6">
+        <div>
+          <img src="https://via.placeholder.com/200" alt="Jonnhy" class="character-image">
+        </div>
+        <div class="flex-1">
+          <h3 class="text-xl font-bold mb-2">Descrição</h3>
+          <p class="text-lg">
+            Jonnhy, um artista boêmio de Nova York, usa sua criatividade para capturar o estranho, mas suas pinturas começaram a refletir visões do Mythos.
+          </p>
+        </div>
+      </div>
+      <div class="character-sheet">
+        <h3 class="text-xl font-bold mb-4">Ficha do Investigador</h3>
+        <div class="mb-4">
+          <h4 class="text-lg font-bold">Informações do Investigador</h4>
+          <p><strong>Nome:</strong> Jonnhy</p>
+          <p><strong>Ocupação:</strong> Artista</p>
+          <p><strong>Idade:</strong> 28</p>
+          <p><strong>Residência:</strong> Nova York, Nova York</p>
+          <p><strong>Nascimento:</strong> 1897, Chicago</p>
+        </div>
+        <hr class="border-t border-green-500 my-4">
+        <div class="mb-4">
+          <h4 class="text-lg font-bold">Características</h4>
+          <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
+            <p><strong>Força:</strong> 45</p>
+            <p><strong>Constituição:</strong> 50</p>
+            <p><strong>Tamanho:</strong> 50</p>
+            <p><strong>Destreza:</strong> 70</p>
+            <p><strong>Aparência:</strong> 75</p>
+            <p><strong>Inteligência:</strong> 60</p>
+            <p><strong>Poder:</strong> 70</p>
+            <p><strong>Educação:</strong> 55</p>
+          </div>
+        </div>
+        <hr class="border-t border-green-500 my-4">
+        <div class="mb-4">
+          <h4 class="text-lg font-bold">Atributos Derivados</h4>
+          <div class="grid grid-cols-2 sm:grid-cols-3 gap-4">
+            <p><strong>Sorte:</strong> 70</p>
+            <p><strong>Pontos de Vida:</strong> 10</p>
+            <p><strong>Pontos de Magia:</strong> 14</p>
+            <p><strong>Sanidade:</strong> 70</p>
+            <p><strong>Bônus de Dano:</strong> Nenhum</p>
+            <p><strong>Bônus de Físico:</strong> 0</p>
+          </div>
+        </div>
+        <hr class="border-t border-green-500 my-4">
+        <div class="mb-4">
+          <h4 class="text-lg font-bold">Perícias</h4>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <p><strong>Arte (Pintura):</strong>
+              <input type="number" class="pericia-input" value="70" min="0" max="100">%
+              <span class="half-value"></span>
+        '     <span class="fifth-value"></span>
+              </p>
+              <p><strong>Arte (Desempenho):</strong>
+              <input type="number" class="pericia-input" value="70" min="0" max="100">%
+              <span class="half-value"></span>
+        '     <span class="fifth-value"></span>
+              </p>
+              <p><strong>Charme:</strong>
+              <input type="number" class="pericia-input" value="70" min="0" max="100">%
+              <span class="half-value"></span>
+        '     <span class="fifth-value"></span>
+              </p>
+              <p><strong>Observar:</strong>
+              <input type="number" class="pericia-input" value="70" min="0" max="100">%
+              <span class="half-value"></span>
+        '     <span class="fifth-value"></span>
+              </p>
+              <p><strong>Persuasão:</strong>
+              <input type="number" class="pericia-input" value="70" min="0" max="100">%
+              <span class="half-value"></span>
+        '     <span class="fifth-value"></span>
+              </p>
+              <p><strong>Psicologia:</strong>
+              <input type="number" class="pericia-input" value="70" min="0" max="100">%
+              <span class="half-value"></span>
+        '     <span class="fifth-value"></span>
+              </p>
+              <p><strong>Escutar:</strong>
+              <input type="number" class="pericia-input" value="70" min="0" max="100">%
+              <span class="half-value"></span>
+        '     <span class="fifth-value"></span>
+              </p>
+              <p><strong>Furtividade:</strong>
+              <input type="number" class="pericia-input" value="70" min="0" max="100">%
+              <span class="half-value"></span>
+        '     <span class="fifth-value"></span>
+              </p>
+            </div>
+            <div>
+              <p><strong>Arte (Escrever):</strong>
+              <input type="number" class="pericia-input" value="70" min="0" max="100">%
+              <span class="half-value"></span>
+        '     <span class="fifth-value"></span>
+              </p>
+              <p><strong>Condução:</strong>
+              <input type="number" class="pericia-input" value="70" min="0" max="100">%
+              <span class="half-value"></span>
+        '     <span class="fifth-value"></span>
+              </p>
+              <p><strong>Disfarçar:</strong>
+              <input type="number" class="pericia-input" value="70" min="0" max="100">%
+              <span class="half-value"></span>
+        '     <span class="fifth-value"></span>
+              </p>
+              <p><strong>Língua (Inglês):</strong>
+              <input type="number" class="pericia-input" value="70" min="0" max="100">%
+              <span class="half-value"></span>
+        '     <span class="fifth-value"></span>
+              </p>
+              <p><strong>Língua (Francês):</strong>
+              <input type="number" class="pericia-input" value="70" min="0" max="100">%
+              <span class="half-value"></span>
+        '     <span class="fifth-value"></span>
+              </p>
+              <p><strong>Ocultismo:</strong>
+              <input type="number" class="pericia-input" value="70" min="0" max="100">%
+              <span class="half-value"></span>
+        '     <span class="fifth-value"></span>
+              </p>
+              <p><strong>Primeiros Socorros:</strong>
+              <input type="number" class="pericia-input" value="70" min="0" max="100">%
+              <span class="half-value"></span>
+        '     <span class="fifth-value"></span>
+              </p>
+              <p><strong>Sleight of Hand:</strong>
+              <input type="number" class="pericia-input" value="70" min="0" max="100">%
+              <span class="half-value"></span>
+        '     <span class="fifth-value"></span>
+              </p>
+            </div>
+          </div>
+        </div>
+        <hr class="border-t border-green-500 my-4">
+        <div class="mb-4">
+          <h4 class="text-lg font-bold">Antecedentes</h4>
+          <p><strong>Descrição:</strong> Um jovem de cabelos longos e olhar sonhador.</p>
+          <p><strong>Ideologia/Crenças:</strong> A arte reflete verdades ocultas.</p>
+          <p><strong>Pessoas Significativas:</strong> Seu professor de arte.</p>
+          <p><strong>Lugares Significativos:</strong> Atelier em Nova York.</p>
+          <p><strong>Objetos Valiosos:</strong> Cavalete e pincéis.</p>
+          <p><strong>Características:</strong> Criativo, sensível.</p>
+          <p><strong>Traumas:</strong> Visões em suas pinturas.</p>
+          <p><strong>Fobias/Manias:</strong> Medo de silêncio total.</p>
+          <p><strong>Grimórios/Feitiços:</strong> Nenhum.</p>
+          <p><strong>Encontros com o Mythos:</strong> Sonhos de cidades alienígenas.</p>
+        </div>
+        <hr class="border-t border-green-500 my-4">
+        <div class="mb-4">
+          <h4 class="text-lg font-bold">Equipamentos e Finanças</h4>
+          <p><strong>Posse:</strong> Cavalete, tintas, sketchbook.</p>
+          <p><strong>Gastos:</strong> $8/semana (material, aluguel).</p>
+          <p><strong>Dinheiro em Mãos:</strong> $30</p>
+          <p><strong>Ativos:</strong> Pequeno apartamento em Nova York.</p>
+        </div>
+      </div>
+      <a href="#personagens" class="button inline-block text-white px-4 py-2 rounded mt-6">Voltar</a>
+    </div>
+  </section>
+
+  <section id="aurora" class="section">
+    <div class="max-w-4xl mx-auto">
+      <h2 class="text-3xl md:text-4xl font-bold mb-2">Aurora</h2>
+      <div class="flex flex-col md:flex-row gap-6 mb-6">
+        <div>
+          <img src="https://via.placeholder.com/200" alt="Aurora" class="character-image">
+        </div>
+        <div class="flex-1">
+          <h3 class="text-xl font-bold mb-2">Descrição</h3>
+          <p class="text-lg">
+            Aurora, uma bibliotecária de Miskatonic, tem um conhecimento vasto de textos antigos, mas sua curiosidade a expôs a segredos perigosos do Mythos.
+          </p>
+        </div>
+      </div>
+      <div class="character-sheet">
+        <h3 class="text-xl font-bold mb-4">Ficha do Investigador</h3>
+        <div class="mb-4">
+          <h4 class="text-lg font-bold">Informações do Investigador</h4>
+          <p><strong>Nome:</strong> Aurora</p>
+          <p><strong>Ocupação:</strong> Bibliotecária</p>
+          <p><strong>Idade:</strong> 30</p>
+          <p><strong>Residência:</strong> Arkham, Massachusetts</p>
+          <p><strong>Nascimento:</strong> 1895, Salem</p>
+        </div>
+        <hr class="border-t border-green-500 my-4">
+        <div class="mb-4">
+          <h4 class="text-lg font-bold">Características</h4>
+          <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
+            <p><strong>Força:</strong> 40</p>
+            <p><strong>Constituição:</strong> 50</p>
+            <p><strong>Tamanho:</strong> 45</p>
+            <p><strong>Destreza:</strong> 60</p>
+            <p><strong>Aparência:</strong> 60</p>
+            <p><strong>Inteligência:</strong> 75</p>
+            <p><strong>Poder:</strong> 70</p>
+            <p><strong>Educação:</strong> 80</p>
+          </div>
+        </div>
+        <hr class="border-t border-green-500 my-4">
+        <div class="mb-4">
+          <h4 class="text-lg font-bold">Atributos Derivados</h4>
+          <div class="grid grid-cols-2 sm:grid-cols-3 gap-4">
+            <p><strong>Sorte:</strong> 70</p>
+            <p><strong>Pontos de Vida:</strong> 10</p>
+            <p><strong>Pontos de Magia:</strong> 14</p>
+            <p><strong>Sanidade:</strong> 70</p>
+            <p><strong>Bônus de Dano:</strong> Nenhum</p>
+            <p><strong>Bônus de Físico:</strong> 0</p>
+          </div>
+        </div>
+        <hr class="border-t border-green-500 my-4">
+        <div class="mb-4">
+          <h4 class="text-lg font-bold">Perícias</h4>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <p><strong>Biblioteca:</strong>
+              <input type="number" class="pericia-input" value="70" min="0" max="100">%
+              <span class="half-value"></span>
+        '     <span class="fifth-value"></span>
+              </p>
+              <p><strong>História:</strong>
+              <input type="number" class="pericia-input" value="70" min="0" max="100">%
+              <span class="half-value"></span>
+        '     <span class="fifth-value"></span>
+              </p>
+              <p><strong>Ocultismo:</strong>
+              <input type="number" class="pericia-input" value="70" min="0" max="100">%
+              <span class="half-value"></span>
+        '     <span class="fifth-value"></span>
+              </p>
+              <p><strong>Antropologia:</strong>
+              <input type="number" class="pericia-input" value="70" min="0" max="100">%
+              <span class="half-value"></span>
+        '     <span class="fifth-value"></span>
+              </p>
+              <p><strong>Arqueologia:</strong>
+              <input type="number" class="pericia-input" value="70" min="0" max="100">%
+              <span class="half-value"></span>
+        '     <span class="fifth-value"></span>
+              </p>
+              <p><strong>Observar:</strong>
+              <input type="number" class="pericia-input" value="70" min="0" max="100">%
+              <span class="half-value"></span>
+        '     <span class="fifth-value"></span>
+              </p>
+              <p><strong>Psicologia:</strong>
+              <input type="number" class="pericia-input" value="70" min="0" max="100">%
+              <span class="half-value"></span>
+        '     <span class="fifth-value"></span>
+              </p>
+              <p><strong>Escutar:</strong>
+              <input type="number" class="pericia-input" value="70" min="0" max="100">%
+              <span class="half-value"></span>
+        '     <span class="fifth-value"></span>
+              </p>
+            </div>
+            <div>
+              <p><strong>Língua (Inglês):</strong>
+              <input type="number" class="pericia-input" value="70" min="0" max="100">%
+              <span class="half-value"></span>
+        '     <span class="fifth-value"></span>
+              </p>
+              <p><strong>Língua (Latim):</strong>
+              <input type="number" class="pericia-input" value="70" min="0" max="100">%
+              <span class="half-value"></span>
+        '     <span class="fifth-value"></span>
+              </p>
+              <p><strong>Língua (Grego):</strong>
+              <input type="number" class="pericia-input" value="70" min="0" max="100">%
+              <span class="half-value"></span>
+        '     <span class="fifth-value"></span>
+              </p>
+              <p><strong>Condução:</strong>
+              <input type="number" class="pericia-input" value="70" min="0" max="100">%
+              <span class="half-value"></span>
+        '     <span class="fifth-value"></span>
+              </p>
+              <p><strong>Furtividade:</strong>
+              <input type="number" class="pericia-input" value="70" min="0" max="100">%
+              <span class="half-value"></span>
+        '     <span class="fifth-value"></span>
+              </p>
+              <p><strong>Persuasão:</strong>
+              <input type="number" class="pericia-input" value="70" min="0" max="100">%
+              <span class="half-value"></span>
+        '     <span class="fifth-value"></span>
+              </p>
+              <p><strong>Primeiros Socorros:</strong>
+              <input type="number" class="pericia-input" value="70" min="0" max="100">%
+              <span class="half-value"></span>
+        '     <span class="fifth-value"></span>
+              </p>
+              <p><strong>Criptografia:</strong>
+              <input type="number" class="pericia-input" value="70" min="0" max="100">%
+              <span class="half-value"></span>
+        '     <span class="fifth-value"></span>
+              </p>
+            </div>
+          </div>
+        </div>
+        <hr class="border-t border-green-500 my-4">
+        <div class="mb-4">
+          <h4 class="text-lg font-bold">Antecedentes</h4>
+          <p><strong>Descrição:</strong> Uma mulher de óculos e cabelo preso.</p>
+          <p><strong>Ideologia/Crenças:</strong> O conhecimento deve ser preservado, mesmo que proibido.</p>
+          <p><strong>Pessoas Significativas:</strong> Curadora da Miskatonic.</p>
+          <p><strong>Lugares Significativos:</strong> Biblioteca da Miskatonic.</p>
+          <p><strong>Objetos Valiosos:</strong> Chave de acesso à seção restrita.</p>
+          <p><strong>Características:</strong> Inteligente, reservada.</p>
+          <p><strong>Traumas:</strong> Leituras que afetaram sua mente.</p>
+          <p><strong>Fobias/Manias:</strong> Medo de livros amaldiçoados.</p>
+          <p><strong>Grimórios/Feitiços:</strong> *De Vermis Mysteriis* (parcial).</p>
+          <p><strong>Encontros com o Mythos:</strong> Tradução de um texto proibido.</p>
+        </div>
+        <hr class="border-t border-green-500 my-4">
+        <div class="mb-4">
+          <h4 class="text-lg font-bold">Equipamentos e Finanças</h4>
+          <p><strong>Posse:</strong> Óculos, livro de notas, caneta.</p>
+          <p><strong>Gastos:</strong> $10/semana (livros, aluguel).</p>
+          <p><strong>Dinheiro em Mãos:</strong> $50</p>
+          <p><strong>Ativos:</strong> Apartamento em Arkham.</p>
+        </div>
+      </div>
+      <a href="#personagens" class="button inline-block text-white px-4 py-2 rounded mt-6">Voltar</a>
+    </div>
+  </section>
+
+  <section id="bestiario" class="section">
+    <div class="max-w-4xl mx-auto">
+      <h2 class="text-3xl md:text-4xl font-bold mb-4">Bestiário</h2>
+      <div class="profile grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div class="profile-item rounded-lg p-6 text-center">
+          <img src="https://via.placeholder.com/150" alt="Cthulhu" class="rounded-full mx-auto mb-4">
+          <h3 class="text-xl font-bold">Cthulhu</h3>
+          <p>O Grande Sonhador, cuja mera presença destrói mentes. Dorme em R’lyeh, mas seu culto está em toda parte.</p>
+        </div>
+        <div class="profile-item rounded-lg p-6 text-center">
+          <img src="https://via.placeholder.com/150" alt="Deep One" class="rounded-full mx-auto mb-4">
+          <h3 class="text-xl font-bold">Deep One</h3>
+          <p>Criaturas anfíbias de Innsmouth, servos de Dagon. Seus olhos vidrados escondem segredos antigos.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+    <section id="pericias" class="section">
+      <div class="max-w-4xl mx-auto">
+        <h2 class="text-3xl md:text-4xl font-bold mb-4">Perícias</h2>
+        <p class="text-lg mb-4">
+          As perícias são o coração de *Call of Cthulhu*. Abaixo está a lista de perícias disponíveis na nossa campanha, com seus valores base padrão da 7ª edição. Clique em uma perícia para saber mais!
+        </p>
+        <div class="profile overflow-x-auto">
+          <table class="skill-table w-full">
+            <thead>
+              <tr>
+                <th>Perícia</th>
+                <th>Base</th>
+                <th>Descrição</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="profile-item">
+                <td><a href="#antropologia" class="text-[#2ecc71] hover:underline">Antropologia</a></td>
+                <td>01%</td>
+                <td>Estudo de culturas humanas, útil para interpretar rituais ou costumes.</td>
+              </tr>
+              <tr class="profile-item">
+                <td><a href="#arqueologia" class="text-[#2ecc71] hover:underline">Arqueologia</a></td>
+                <td>01%</td>
+                <td>Pesquisa de sítios antigos, revelando artefatos do Mythos.</td>
+              </tr>
+              <tr class="profile-item">
+                <td><a href="#armas-de-fogo-pistolas" class="text-[#2ecc71] hover:underline">Armas de Fogo (Pistolas)</a></td>
+                <td>20%</td>
+                <td>Uso de armas leves de fogo, como pistolas e revólveres.</td>
+              </tr>
+              <tr class="profile-item">
+                <td><a href="#armas-de-fogo-rifles" class="text-[#2ecc71] hover:underline">Armas de Fogo (Rifles)</a></td>
+                <td>25%</td>
+                <td>Manuseio de armas de longo alcance, como rifles e escopetas.</td>
+              </tr>
+              <tr class="profile-item">
+                <td><a href="#armas-de-fogo-submetralhadoras" class="text-[#2ecc71] hover:underline">Armas de Fogo (Submetralhadoras)</a></td>
+                <td>15%</td>
+                <td>Controle de armas automáticas, como submetralhadoras.</td>
+              </tr>
+              <tr class="profile-item">
+                <td><a href="#armas-de-fogo-pesadas" class="text-[#2ecc71] hover:underline">Armas de Fogo (Pesadas)</a></td>
+                <td>00%</td>
+                <td>Operação de armas avançadas, como canhões ou lança-chamas.</td>
+              </tr>
+              <tr class="profile-item">
+                <td><a href="#arremesso" class="text-[#2ecc71] hover:underline">Arremesso</a></td>
+                <td>20%</td>
+                <td>Lançar objetos com precisão, incluindo armas improvisadas.</td>
+              </tr>
+              <tr class="profile-item">
+                <td><a href="#arte-artesanato" class="text-[#2ecc71] hover:underline">Arte (Artesanato)</a></td>
+                <td>05%</td>
+                <td>Criação de objetos artesanais, como esculturas ou joias.</td>
+              </tr>
+              <tr class="profile-item">
+                <td><a href="#arte-criar" class="text-[#2ecc71] hover:underline">Arte (Criar)</a></td>
+                <td>05%</td>
+                <td>Produção artística criativa, como pintura ou fotografia.</td>
+              </tr>
+              <tr class="profile-item">
+                <td><a href="#arte-desempenho" class="text-[#2ecc71] hover:underline">Arte (Desempenho)</a></td>
+                <td>05%</td>
+                <td>Apresentações ao vivo, como teatro ou dança.</td>
+              </tr>
+              <tr class="profile-item">
+                <td><a href="#arte-expressao" class="text-[#2ecc71] hover:underline">Arte (Expressão)</a></td>
+                <td>05%</td>
+                <td>Expressão escrita ou verbal, como poesia ou oratória.</td>
+              </tr>
+              <tr class="profile-item">
+                <td><a href="#arte-instrumento" class="text-[#2ecc71] hover:underline">Arte (Instrumento)</a></td>
+                <td>05%</td>
+                <td>Toque de instrumentos musicais, como violino ou piano.</td>
+              </tr>
+              <tr class="profile-item">
+                <td><a href="#arte-escrever" class="text-[#2ecc71] hover:underline">Arte (Escrever)</a></td>
+                <td>05%</td>
+                <td>Redação de textos ou histórias, como contos ou romances.</td>
+              </tr>
+              <tr class="profile-item">
+                <td><a href="#apreciacao" class="text-[#2ecc71] hover:underline">Apreciação</a></td>
+                <td>05%</td>
+                <td>Avaliar a qualidade ou autenticidade de itens.</td>
+              </tr>
+              <tr class="profile-item">
+                <td><a href="#avaliacao" class="text-[#2ecc71] hover:underline">Avaliação</a></td>
+                <td>05%</td>
+                <td>Estimar o valor monetário de objetos ou propriedades.</td>
+              </tr>
+              <tr class="profile-item">
+                <td><a href="#briga" class="text-[#2ecc71] hover:underline">Briga</a></td>
+                <td>25%</td>
+                <td>Combate desarmado, como socos ou chutes.</td>
+              </tr>
+              <tr class="profile-item">
+                <td><a href="#cavalgar" class="text-[#2ecc71] hover:underline">Cavalgar</a></td>
+                <td>05%</td>
+                <td>Montar cavalos ou outros animais.</td>
+              </tr>
+              <tr class="profile-item">
+                <td><a href="#charme" class="text-[#2ecc71] hover:underline">Charme</a></td>
+                <td>15%</td>
+                <td>Influenciar outros com carisma e simpatia.</td>
+              </tr>
+              <tr class="profile-item">
+                <td><a href="#chavear" class="text-[#2ecc71] hover:underline">Chavear</a></td>
+                <td>01%</td>
+                <td>Abrir fechaduras com ferramentas especializadas.</td>
+              </tr>
+              <tr class="profile-item">
+                <td><a href="#ciencia-astronomia" class="text-[#2ecc71] hover:underline">Ciência (Astronomia)</a></td>
+                <td>01%</td>
+                <td>Estudo de corpos celestes e fenômenos espaciais.</td>
+              </tr>
+              <tr class="profile-item">
+                <td><a href="#ciencia-biologia" class="text-[#2ecc71] hover:underline">Ciência (Biologia)</a></td>
+                <td>01%</td>
+                <td>Estudo de organismos vivos e suas funções.</td>
+              </tr>
+              <tr class="profile-item">
+                <td><a href="#ciencia-botanica" class="text-[#2ecc71] hover:underline">Ciência (Botânica)</a></td>
+                <td>01%</td>
+                <td>Estudo de plantas e seus usos.</td>
+              </tr>
+              <tr class="profile-item">
+                <td><a href="#ciencia-quimica" class="text-[#2ecc71] hover:underline">Ciência (Química)</a></td>
+                <td>01%</td>
+                <td>Manipulação de substâncias químicas.</td>
+              </tr>
+              <tr class="profile-item">
+                <td><a href="#ciencia-criptografia" class="text-[#2ecc71] hover:underline">Ciência (Criptografia)</a></td>
+                <td>01%</td>
+                <td>Decifrar códigos e mensagens secretas.</td>
+              </tr>
+              <tr class="profile-item">
+                <td><a href="#ciencia-eletronica" class="text-[#2ecc71] hover:underline">Ciência (Eletrônica)</a></td>
+                <td>01%</td>
+                <td>Reparos e uso de dispositivos eletrônicos.</td>
+              </tr>
+              <tr class="profile-item">
+                <td><a href="#ciencia-fisica" class="text-[#2ecc71] hover:underline">Ciência (Física)</a></td>
+                <td>01%</td>
+                <td>Estudo de leis naturais e fenômenos físicos.</td>
+              </tr>
+              <tr class="profile-item">
+                <td><a href="#ciencia-geologia" class="text-[#2ecc71] hover:underline">Ciência (Geologia)</a></td>
+                <td>01%</td>
+                <td>Estudo de rochas, minerais e formações terrestres.</td>
+              </tr>
+              <tr class="profile-item">
+                <td><a href="#ciencia-historia-natural" class="text-[#2ecc71] hover:underline">Ciência (História Natural)</a></td>
+                <td>01%</td>
+                <td>Conhecimento de fauna, flora e ecossistemas.</td>
+              </tr>
+              <tr class="profile-item">
+                <td><a href="#ciencia-matematica" class="text-[#2ecc71] hover:underline">Ciência (Matemática)</a></td>
+                <td>10%</td>
+                <td>Cálculos complexos e resolução de problemas numéricos.</td>
+              </tr>
+              <tr class="profile-item">
+                <td><a href="#ciencia-medicina" class="text-[#2ecc71] hover:underline">Ciência (Medicina)</a></td>
+                <td>01%</td>
+                <td>Diagnóstico e tratamento de doenças e ferimentos.</td>
+              </tr>
+              <tr class="profile-item">
+                <td><a href="#ciencia-farmacia" class="text-[#2ecc71] hover:underline">Ciência (Farmácia)</a></td>
+                <td>01%</td>
+                <td>Preparação e uso de medicamentos.</td>
+              </tr>
+              <tr class="profile-item">
+                <td><a href="#ciencia-meteorologia" class="text-[#2ecc71] hover:underline">Ciência (Meteorologia)</a></td>
+                <td>01%</td>
+                <td>Análise e previsão de condições climáticas.</td>
+              </tr>
+              <tr class="profile-item">
+                <td><a href="#ciencia-zoologia" class="text-[#2ecc71] hover:underline">Ciência (Zoologia)</a></td>
+                <td>01%</td>
+                <td>Estudo de animais e seus comportamentos.</td>
+              </tr>
+              <tr class="profile-item">
+                <td><a href="#conducao" class="text-[#2ecc71] hover:underline">Condução</a></td>
+                <td>20%</td>
+                <td>Dirigir veículos terrestres, como carros ou caminhões.</td>
+              </tr>
+              <tr class="profile-item">
+                <td><a href="#contabilidade" class="text-[#2ecc71] hover:underline">Contabilidade</a></td>
+                <td>05%</td>
+                <td>Gerenciamento de finanças e registros contábeis.</td>
+              </tr>
+              <tr class="profile-item">
+                <td><a href="#criptografia" class="text-[#2ecc71] hover:underline">Criptografia</a></td>
+                <td>01%</td>
+                <td>Decodificação de mensagens cifradas.</td>
+              </tr>
+              <tr class="profile-item">
+                <td><a href="#direito" class="text-[#2ecc71] hover:underline">Direito</a></td>
+                <td>05%</td>
+                <td>Conhecimento de leis e sistemas jurídicos.</td>
+              </tr>
+              <tr class="profile-item">
+                <td><a href="#disfarcar" class="text-[#2ecc71] hover:underline">Disfarçar</a></td>
+                <td>05%</td>
+                <td>Alterar aparência para enganar observadores.</td>
+              </tr>
+              <tr class="profile-item">
+                <td><a href="#eletronica" class="text-[#2ecc71] hover:underline">Eletrônica</a></td>
+                <td>01%</td>
+                <td>Manutenção e reparo de dispositivos eletrônicos.</td>
+              </tr>
+              <tr class="profile-item">
+                <td><a href="#encontar" class="text-[#2ecc71] hover:underline">Encontar</a></td>
+                <td>25%</td>
+                <td>Localizar objetos ou pistas ocultas.</td>
+              </tr>
+              <tr class="profile-item">
+                <td><a href="#escalar" class="text-[#2ecc71] hover:underline">Escalar</a></td>
+                <td>20%</td>
+                <td>Subir superfícies íngremes ou obstáculos.</td>
+              </tr>
+              <tr class="profile-item">
+                <td><a href="#escutar" class="text-[#2ecc71] hover:underline">Escutar</a></td>
+                <td>20%</td>
+                <td>Perceber sons distantes ou abafados.</td>
+              </tr>
+              <tr class="profile-item">
+                <td><a href="#esquivar" class="text-[#2ecc71] hover:underline">Esquivar</a></td>
+                <td>30%</td>
+                <td>Evitar ataques ou perigos físicos.</td>
+              </tr>
+              <tr class="profile-item">
+                <td><a href="#furtividade" class="text-[#2ecc71] hover:underline">Furtividade</a></td>
+                <td>20%</td>
+                <td>Mover-se sem ser notado.</td>
+              </tr>
+              <tr class="profile-item">
+                <td><a href="#furtividade-sobrevivencia" class="text-[#2ecc71] hover:underline">Furtividade (Sobrevivência)</a></td>
+                <td>10%</td>
+                <td>Camuflagem em ambientes naturais.</td>
+              </tr>
+              <tr class="profile-item">
+                <td><a href="#lancar" class="text-[#2ecc71] hover:underline">Lançar</a></td>
+                <td>20%</td>
+                <td>Arremessar armas ou objetos com precisão.</td>
+              </tr>
+              <tr class="profile-item">
+                <td><a href="#manejar" class="text-[#2ecc71] hover:underline">Manejar</a></td>
+                <td>10%</td>
+                <td>Usar armas corpo a corpo, como facas ou espadas.</td>
+              </tr>
+              <tr class="profile-item">
+                <td><a href="#matematica" class="text-[#2ecc71] hover:underline">Matemática</a></td>
+                <td>10%</td>
+                <td>Resolução de problemas numéricos e lógicos.</td>
+              </tr>
+              <tr class="profile-item">
+                <td><a href="#medicina" class="text-[#2ecc71] hover:underline">Medicina</a></td>
+                <td>01%</td>
+                <td>Diagnóstico e tratamento avançado de ferimentos.</td>
+              </tr>
+              <tr class="profile-item">
+                <td><a href="#meteorologia" class="text-[#2ecc71] hover:underline">Meteorologia</a></td>
+                <td>01%</td>
+                <td>Previsão e análise de condições climáticas.</td>
+              </tr>
+              <tr class="profile-item">
+                <td><a href="#mitos-de-cthulhu" class="text-[#2ecc71] hover:underline">Mitos de Cthulhu</a></td>
+                <td>00%</td>
+                <td>Conhecimento de entidades e segredos do Mythos.</td>
+              </tr>
+              <tr class="profile-item">
+                <td><a href="#navegacao" class="text-[#2ecc71] hover:underline">Navegação</a></td>
+                <td>10%</td>
+                <td>Orientação em viagens por terra ou mar.</td>
+              </tr>
+              <tr class="profile-item">
+                <td><a href="#natacao" class="text-[#2ecc71] hover:underline">Natação</a></td>
+                <td>20%</td>
+                <td>Nadar em águas abertas ou turbulentas.</td>
+              </tr>
+              <tr class="profile-item">
+                <td><a href="#natural" class="text-[#2ecc71] hover:underline">Natural</a></td>
+                <td>10%</td>
+                <td>Sobrevivência em ambientes selvagens.</td>
+              </tr>
+              <tr class="profile-item">
+                <td><a href="#pilotar" class="text-[#2ecc71] hover:underline">Pilotar</a></td>
+                <td>01%</td>
+                <td>Controlar aeronaves ou veículos complexos.</td>
+              </tr>
+              <tr class="profile-item">
+                <td><a href="#primeiros-socorros" class="text-[#2ecc71] hover:underline">Primeiros Socorros</a></td>
+                <td>30%</td>
+                <td>Cuidados básicos de saúde em emergências.</td>
+              </tr>
+              <tr class="profile-item">
+                <td><a href="#psicanalise" class="text-[#2ecc71] hover:underline">Psicanálise</a></td>
+                <td>01%</td>
+                <td>Análise e tratamento da mente.</td>
+              </tr>
+              <tr class="profile-item">
+                <td><a href="#psicologia" class="text-[#2ecc71] hover:underline">Psicologia</a></td>
+                <td>10%</td>
+                <td>Entender comportamentos e intenções.</td>
+              </tr>
+              <tr class="profile-item">
+                <td><a href="#rastrear" class="text-[#2ecc71] hover:underline">Rastrear</a></td>
+                <td>10%</td>
+                <td>Seguir pistas ou rastros físicos.</td>
+              </tr>
+              <tr class="profile-item">
+                <td><a href="#saltar" class="text-[#2ecc71] hover:underline">Saltar</a></td>
+                <td>20%</td>
+                <td>Pular distâncias ou alturas consideráveis.</td>
+              </tr>
+              <tr class="profile-item">
+                <td><a href="#sleight-of-hand" class="text-[#2ecc71] hover:underline">Sleight of Hand</a></td>
+                <td>05%</td>
+                <td>Truques de mãos, como furtar objetos.</td>
+              </tr>
+              <tr class="profile-item">
+                <td><a href="#sobrevivencia" class="text-[#2ecc71] hover:underline">Sobrevivência</a></td>
+                <td>10%</td>
+                <td>Viver em ambientes selvagens ou hostis.</td>
+              </tr>
+              <tr class="profile-item">
+                <td><a href="#usar-computadores" class="text-[#2ecc71] hover:underline">Usar Computadores</a></td>
+                <td>05%</td>
+                <td>Operar tecnologia e sistemas computacionais.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- Individual Skill Sections -->
+    <section id="antropologia" class="section">
+      <div class="max-w-4xl mx-auto">
+        <h2 class="text-3xl md:text-4xl font-bold mb-2">Antropologia</h2>
+        <div class="character-sheet">
+          <h3 class="text-xl font-bold mb-4">Detalhes da Perícia</h3>
+          <div class="mb-4">
+            <p><strong>Nome:</strong> Antropologia</p>
+            <p><strong>Valor Base:</strong> 01%</p>
+            <p><strong>Descrição:</strong> Permite o estudo e compreensão de culturas humanas, suas práticas, rituais e costumes. Útil para identificar comportamentos culturais em investigações ou reconhecer práticas antigas ligadas ao Mythos.</p>
+            <p><strong>Exemplo de Uso:</strong> Decifrar o significado de um ritual tribal encontrado em um artefato ou entender a dinâmica social de uma vila isolada.</p>
+            <p><strong>Profissões Relevantes:</strong> Antropólogo, Historiador, Missionário.</p>
+          </div>
+        </div>
+        <a href="#pericias" class="button inline-block text-white px-4 py-2 rounded mt-6">Voltar</a>
+      </div>
+    </section>
+
+    <section id="arqueologia" class="section">
+      <div class="max-w-4xl mx-auto">
+        <h2 class="text-3xl md:text-4xl font-bold mb-2">Arqueologia</h2>
+        <div class="character-sheet">
+          <h3 class="text-xl font-bold mb-4">Detalhes da Perícia</h3>
+          <div class="mb-4">
+            <p><strong>Nome:</strong> Arqueologia</p>
+            <p><strong>Valor Base:</strong> 01%</p>
+            <p><strong>Descrição:</strong> Permite a pesquisa e escavação de sítios antigos, identificando artefatos e ruínas. Essencial para descobrir relíquias do Mythos ou interpretar inscrições antigas.</p>
+            <p><strong>Exemplo de Uso:</strong> Identificar a origem de um altar estranho ou datar um artefato encontrado em uma escavação.</p>
+            <p><strong>Profissões Relevantes:</strong> Arqueólogo, Historiador, Aventureiro.</p>
+          </div>
+        </div>
+        <a href="#pericias" class="button inline-block text-white px-4 py-2 rounded mt-6">Voltar</a>
+      </div>
+    </section>
+
+    <section id="armas-de-fogo-pistolas" class="section">
+      <div class="max-w-4xl mx-auto">
+        <h2 class="text-3xl md:text-4xl font-bold mb-2">Armas de Fogo (Pistolas e Revólveres)</h2>
+        <div class="character-sheet">
+          <h3 class="text-xl font-bold mb-4">Detalhes da Perícia</h3>
+          <div class="mb-4">
+            <p><strong>Nome:</strong> Armas de Fogo (Pistolas e Revólveres)</p>
+            <p><strong>Valor Base:</strong> 20%</p>
+            <p><strong>Descrição:</strong> Habilidade para usar armas de fogo leves, como pistolas e revólveres. Inclui manuseio, pontaria e manutenção básica.</p>
+            <p><strong>Exemplo de Uso:</strong> Atirar em um cultista durante um confronto ou desarmar um mecanismo de uma arma.</p>
+            <p><strong>Profissões Relevantes:</strong> Detetive, Policial, Caçador.</p>
+          </div>
+        </div>
+        <a href="#pericias" class="button inline-block text-white px-4 py-2 rounded mt-6">Voltar</a>
+      </div>
+    </section>
+
+    <section id="armas-de-fogo-rifles" class="section">
+      <div class="max-w-4xl mx-auto">
+        <h2 class="text-3xl md:text-4xl font-bold mb-2">Armas de Fogo (Rifles e Escopetas)</h2>
+        <div class="character-sheet">
+          <h3 class="text-xl font-bold mb-4">Detalhes da Perícia</h3>
+          <div class="mb-4">
+            <p><strong>Nome:</strong> Armas de Fogo (Rifles e Escopetas)</p>
+            <p><strong>Valor Base:</strong> 25%</p>
+            <p><strong>Descrição:</strong> Habilidade para usar armas de longo alcance, como rifles e escopetas. Foca em precisão e uso em distâncias maiores.</p>
+            <p><strong>Exemplo de Uso:</strong> Abater uma criatura à distância ou caçar em áreas rurais.</p>
+            <p><strong>Profissões Relevantes:</strong> Caçador, Soldado, Guarda Florestal.</p>
+          </div>
+        </div>
+        <a href="#pericias" class="button inline-block text-white px-4 py-2 rounded mt-6">Voltar</a>
+      </div>
+    </section>
+
+    <section id="armas-de-fogo-submetralhadoras" class="section">
+      <div class="max-w-4xl mx-auto">
+        <h2 class="text-3xl md:text-4xl font-bold mb-2">Armas de Fogo (Submetralhadoras e Metralhadoras)</h2>
+        <div class="character-sheet">
+          <h3 class="text-xl font-bold mb-4">Detalhes da Perícia</h3>
+          <div class="mb-4">
+            <p><strong>Nome:</strong> Armas de Fogo (Submetralhadoras e Metralhadoras)</p>
+            <p><strong>Valor Base:</strong> 15%</p>
+            <p><strong>Descrição:</strong> Capacidade de operar armas automáticas, como submetralhadoras e metralhadoras. Requer controle e treinamento específico.</p>
+            <p><strong>Exemplo de Uso:</strong> Disparar rajadas contra múltiplos inimigos em uma emboscada.</p>
+            <p><strong>Profissões Relevantes:</strong> Gangster, Soldado, Agente Federal.</p>
+          </div>
+        </div>
+        <a href="#pericias" class="button inline-block text-white px-4 py-2 rounded mt-6">Voltar</a>
+      </div>
+    </section>
+
+    <section id="armas-de-fogo-pesadas" class="section">
+      <div class="max-w-4xl mx-auto">
+        <h2 class="text-3xl md:text-4xl font-bold mb-2">Armas de Fogo (Pesadas)</h2>
+        <div class="character-sheet">
+          <h3 class="text-xl font-bold mb-4">Detalhes da Perícia</h3>
+          <div class="mb-4">
+            <p><strong>Nome:</strong> Armas de Fogo (Pesadas)</p>
+            <p><strong>Valor Base:</strong> 00%</p>
+            <p><strong>Descrição:</strong> Habilidade para operar armas avançadas, como canhões, lança-chamas ou artilharia. Raro e especializado.</p>
+            <p><strong>Exemplo de Uso:</strong> Usar um lança-chamas contra uma horda de criaturas ou operar uma metralhadora pesada.</p>
+            <p><strong>Profissões Relevantes:</strong> Militar, Engenheiro de Armas.</p>
+          </div>
+        </div>
+        <a href="#pericias" class="button inline-block text-white px-4 py-2 rounded mt-6">Voltar</a>
+      </div>
+    </section>
+
+    <section id="arremesso" class="section">
+      <div class="max-w-4xl mx-auto">
+        <h2 class="text-3xl md:text-4xl font-bold mb-2">Arremesso</h2>
+        <div class="character-sheet">
+          <h3 class="text-xl font-bold mb-4">Detalhes da Perícia</h3>
+          <div class="mb-4">
+            <p><strong>Nome:</strong> Arremesso</p>
+            <p><strong>Valor Base:</strong> 20%</p>
+            <p><strong>Descrição:</strong> Habilidade para lançar objetos com precisão, incluindo armas improvisadas como pedras ou facas de arremesso.</p>
+            <p><strong>Exemplo de Uso:</strong> Arremessar uma granada para desarmar uma armadilha ou acertar um inimigo com uma faca.</p>
+            <p><strong>Profissões Relevantes:</strong> Atleta, Caçador, Aventureiro.</p>
+          </div>
+        </div>
+        <a href="#pericias" class="button inline-block text-white px-4 py-2 rounded mt-6">Voltar</a>
+      </div>
+    </section>
+
+    <section id="arte-artesanato" class="section">
+      <div class="max-w-4xl mx-auto">
+        <h2 class="text-3xl md:text-4xl font-bold mb-2">Arte (Artesanato)</h2>
+        <div class="character-sheet">
+          <h3 class="text-xl font-bold mb-4">Detalhes da Perícia</h3>
+          <div class="mb-4">
+            <p><strong>Nome:</strong> Arte (Artesanato)</p>
+            <p><strong>Valor Base:</strong> 05%</p>
+            <p><strong>Descrição:</strong> Capacidade de criar objetos artesanais, como esculturas, joias ou móveis, com qualidade estética ou funcional.</p>
+            <p><strong>Exemplo de Uso:</strong> Criar uma réplica de um artefato para enganar um cultista ou restaurar um objeto antigo.</p>
+            <p><strong>Profissões Relevantes:</strong> Artesão, Escultor, Joalheiro.</p>
+          </div>
+        </div>
+        <a href="#pericias" class="button inline-block text-white px-4 py-2 rounded mt-6">Voltar</a>
+      </div>
+    </section>
+
+    <section id="arte-criar" class="section">
+      <div class="max-w-4xl mx-auto">
+        <h2 class="text-3xl md:text-4xl font-bold mb-2">Arte (Criar)</h2>
+        <div class="character-sheet">
+          <h3 class="text-xl font-bold mb-4">Detalhes da Perícia</h3>
+          <div class="mb-4">
+            <p><strong>Nome:</strong> Arte (Criar)</p>
+            <p><strong>Valor Base:</strong> 05%</p>
+            <p><strong>Descrição:</strong> Habilidade para produzir obras artísticas visuais, como pintura, fotografia ou desenho, com expressão criativa.</p>
+            <p><strong掆</p>
+            <p><strong>Exemplo de Uso:</strong> Criar um esboço de uma cena de crime para ajudar na investigação ou pintar um símbolo místico com precisão.</p>
+            <p><strong>Profissões Relevantes:</strong> Artista, Fotógrafo, Designer.</p>
+          </div>
+        </div>
+        <a href="#pericias" class="button inline-block text-white px-4 py-2 rounded mt-6">Voltar</a>
+      </div>
+    </section>
+
+    <section id="arte-desempenho" class="section">
+      <div class="max-w-4xl mx-auto">
+        <h2 class="text-3xl md:text-4xl font-bold mb-2">Arte (Desempenho)</h2>
+        <div class="character-sheet">
+          <h3 class="text-xl font-bold mb-4">Detalhes da Perícia</h3>
+          <div class="mb-4">
+            <p><strong>Nome:</strong> Arte (Desempenho)</p>
+            <p><strong>Valor Base:</strong> 05%</p>
+            <p><strong>Descrição:</strong> Habilidade em apresentações ao vivo, como teatro, dança ou canto, para engajar ou distrair uma audiência.</p>
+            <p><strong>Exemplo de Uso:</strong> Realizar uma performance para ganhar a confiança de um grupo ou distrair cultistas durante uma fuga.</p>
+            <p><strong>Profissões Relevantes:</strong> Ator, Dançarino, Cantor.</p>
+          </div>
+        </div>
+        <a href="#pericias" class="button inline-block text-white px-4 py-2 rounded mt-6">Voltar</a>
+      </div>
+    </section>
+
+    <section id="arte-expressao" class="section">
+      <div class="max-w-4xl mx-auto">
+        <h2 class="text-3xl md:text-4xl font-bold mb-2">Arte (Expressão)</h2>
+        <div class="character-sheet">
+          <h3 class="text-xl font-bold mb-4">Detalhes da Perícia</h3>
+          <div class="mb-4">
+            <p><strong>Nome:</strong> Arte (Expressão)</p>
+            <p><strong>Valor Base:</strong> 05%</p>
+            <p><strong>Descrição:</strong> Habilidade em expressão escrita ou verbal, como poesia, oratória ou redação criativa, para persuadir ou inspirar.</p>
+            <p><strong>Exemplo de Uso:</strong> Escrever um artigo convincente para alertar o público ou recitar um discurso para acalmar uma multidão.</p>
+            <p><strong>Profissões Relevantes:</strong> Escritor, Poeta, Orador.</p>
+          </div>
+        </div>
+        <a href="#pericias" class="button inline-block text-white px-4 py-2 rounded mt-6">Voltar</a>
+      </div>
+    </section>
+
+    <section id="arte-instrumento" class="section">
+      <div class="max-w-4xl mx-auto">
+        <h2 class="text-3xl md:text-4xl font-bold mb-2">Arte (Instrumento)</h2>
+        <div class="character-sheet">
+          <h3 class="text-xl font-bold mb-4">Detalhes da Perícia</h3>
+          <div class="mb-4">
+            <p><strong>Nome:</strong> Arte (Instrumento)</p>
+            <p><strong>Valor Base:</strong> 05%</p>
+            <p><strong>Descrição:</strong> Habilidade para tocar instrumentos musicais, criando melodias que podem influenciar emoções ou situações.</p>
+            <p><strong>Exemplo de Uso:</strong> Tocar uma melodia para acalmar um espírito ou entreter um grupo de cultistas.</p>
+            <p><strong>Profissões Relevantes:</strong> Músico, Compositor.</p>
+          </div>
+        </div>
+        <a href="#pericias" class="button inline-block text-white px-4 py-2 rounded mt-6">Voltar</a>
+      </div>
+    </section>
+
+    <section id="arte-escrever" class="section">
+      <div class="max-w-4xl mx-auto">
+        <h2 class="text-3xl md:text-4xl font-bold mb-2">Arte (Escrever)</h2>
+        <div class="character-sheet">
+          <h3 class="text-xl font-bold mb-4">Detalhes da Perícia</h3>
+          <div class="mb-4">
+            <p><strong>Nome:</strong> Arte (Escrever)</p>
+            <p><strong>Valor Base:</strong> 05%</p>
+            <p><strong>Descrição:</strong> Habilidade para redigir textos criativos ou informativos, como contos, romances ou relatórios detalhados.</p>
+            <p><strong>Exemplo de Uso:</strong> Escrever um relatório sobre um culto para a polícia ou criar uma história que revele pistas do Mythos.</p>
+            <p><strong>Profissões Relevantes:</strong> Escritor, Jornalista, Historiador.</p>
+          </div>
+        </div>
+        <a href="#pericias" class="button inline-block text-white px-4 py-2 rounded mt-6">Voltar</a>
+      </div>
+    </section>
+
+    <section id="apreciacao" class="section">
+      <div class="max-w-4xl mx-auto">
+        <h2 class="text-3xl md:text-4xl font-bold mb-2">Apreciação</h2>
+        <div class="character-sheet">
+          <h3 class="text-xl font-bold mb-4">Detalhes da Perícia</h3>
+          <div class="mb-4">
+            <p><strong>Nome:</strong> Apreciação</p>
+            <p><strong>Valor Base:</strong> 05%</p>
+            <p><strong>Descrição:</strong> Capacidade de avaliar a qualidade, autenticidade ou origem de itens, como obras de arte ou antiguidades.</p>
+            <p><strong>Exemplo de Uso:</strong> Identificar se um artefato é genuíno ou uma falsificação em um leilão.</p>
+            <p><strong>Profissões Relevantes:</strong> Antiquário, Historiador de Arte, Colecionador.</p>
+          </div>
+        </div>
+        <a href="#pericias" class="button inline-block text-white px-4 py-2 rounded mt-6">Voltar</a>
+      </div>
+    </section>
+
+    <section id="avaliacao" class="section">
+      <div class="max-w-4xl mx-auto">
+        <h2 class="text-3xl md:text-4xl font-bold mb-2">Avaliação</h2>
+        <div class="character-sheet">
+          <h3 class="text-xl font-bold mb-4">Detalhes da Perícia</h3>
+          <div class="mb-4">
+            <p><strong>Nome:</strong> Avaliação</p>
+            <p><strong>Valor Base:</strong> 05%</p>
+            <p><strong>Descrição:</strong> Habilidade para estimar o valor monetário de objetos, propriedades ou mercadorias.</p>
+            <p><strong>Exemplo de Uso:</strong> Determinar o valor de um tomo antigo ou negociar o preço de um artefato.</p>
+            <p><strong>Profissões Relevantes:</strong> Leiloeiro, Comerciante, Antiquário.</p>
+          </div>
+        </div>
+        <a href="#pericias" class="button inline-block text-white px-4 py-2 rounded mt-6">Voltar</a>
+      </div>
+    </section>
+
+    <section id="briga" class="section">
+      <div class="max-w-4xl mx-auto">
+        <h2 class="text-3xl md:text-4xl font-bold mb-2">Briga</h2>
+        <div class="character-sheet">
+          <h3 class="text-xl font-bold mb-4">Detalhes da Perícia</h3>
+          <div class="mb-4">
+            <p><strong>Nome:</strong> Briga</p>
+            <p><strong>Valor Base:</strong> 25%</p>
+            <p><strong>Descrição:</strong> Habilidade em combate desarmado, incluindo socos, chutes e imobilizações.</p>
+            <p><strong>Exemplo de Uso:</strong> Lutar contra um cultista em uma briga de rua ou se defender de um ataque surpresa.</p>
+            <p><strong>Profissões Relevantes:</strong> Lutador, Policial, Guarda.</p>
+          </div>
+        </div>
+        <a href="#pericias" class="button inline-block text-white px-4 py-2 rounded mt-6">Voltar</a>
+      </div>
+    </section>
+
+    <section id="cavalgar" class="section">
+      <div class="max-w-4xl mx-auto">
+        <h2 class="text-3xl md:text-4xl font-bold mb-2">Cavalgar</h2>
+        <div class="character-sheet">
+          <h3 class="text-xl font-bold mb-4">Detalhes da Perícia</h3>
+          <div class="mb-4">
+            <p><strong>Nome:</strong> Cavalgar</p>
+            <p><strong>Valor Base:</strong> 05%</p>
+            <p><strong>Descrição:</strong> Habilidade para montar e controlar cavalos ou outros animais de montaria.</p>
+            <p><strong>Exemplo de Uso:</strong> Perseguir um suspeito a cavalo ou escapar por terrenos rurais.</p>
+            <p><strong>Profissões Relevantes:</strong> Fazendeiro, Caubói, Explorador.</p>
+          </div>
+        </div>
+        <a href="#pericias" class="button inline-block text-white px-4 py-2 rounded mt-6">Voltar</a>
+      </div>
+    </section>
+
+    <section id="charme" class="section">
+      <div class="max-w-4xl mx-auto">
+        <h2 class="text-3xl md:text-4xl font-bold mb-2">Charme</h2>
+        <div class="character-sheet">
+          <h3 class="text-xl font-bold mb-4">Detalhes da Perícia</h3>
+          <div class="mb-4">
+            <p><strong>Nome:</strong> Charme</p>
+            <p><strong>Valor Base:</strong> 15%</p>
+            <p><strong>Descrição:</strong> Habilidade para influenciar outros com carisma, simpatia ou sedução.</p>
+            <p><strong>Exemplo de Uso:</strong> Convencer um guarda a liberar acesso a uma área restrita ou ganhar a confiança de um informante.</p>
+            <p><strong>Profissões Relevantes:</strong> Artista, Vendedor, Diplomata.</p>
+          </div>
+        </div>
+        <a href="#pericias" class="button inline-block text-white px-4 py-2 rounded mt-6">Voltar</a>
+      </div>
+    </section>
+
+    <section id="chavear" class="section">
+      <div class="max-w-4xl mx-auto">
+        <h2 class="text-3xl md:text-4xl font-bold mb-2">Chavear</h2>
+        <div class="character-sheet">
+          <h3 class="text-xl font-bold mb-4">Detalhes da Perícia</h3>
+          <div class="mb-4">
+            <p><strong>Nome:</strong> Chavear</p>
+            <p><strong>Valor Base:</strong> 01%</p>
+            <p><strong>Descrição:</strong> Habilidade para abrir fechaduras com ferramentas, como gazuas.</p>
+            <p><strong>Exemplo de Uso:</strong> Invadir um armazém trancado ou abrir um cofre com documentos secretos.</p>
+            <p><strong>Profissões Relevantes:</strong> Ladrão, Detetive, Espião.</p>
+          </div>
+        </div>
+        <a href="#pericias" class="button inline-block text-white px-4 py-2 rounded mt-6">Voltar</a>
+      </div>
+    </section>
+
+    <section id="ciencia-astronomia" class="section">
+      <div class="max-w-4xl mx-auto">
+        <h2 class="text-3xl md:text-4xl font-bold mb-2">Ciência (Astronomia)</h2>
+        <div class="character-sheet">
+          <h3 class="text-xl font-bold mb-4">Detalhes da Perícia</h3>
+          <div class="mb-4">
+            <p><strong>Nome:</strong> Ciência (Astronomia)</p>
+            <p><strong>Valor Base:</strong> 01%</p>
+            <p><strong>Descrição:</strong> Conhecimento sobre corpos celestes, constelações e fenômenos espaciais.</p>
+            <p><strong>Exemplo de Uso:</strong> Identificar uma estrela mencionada em um texto antigo ou prever um evento astronômico ligado ao Mythos.</p>
+            <p><strong>Profissões Relevantes:</strong> Astrônomo, Navegador, Ocultista.</p>
+          </div>
+        </div>
+        <a href="#pericias" class="button inline-block text-white px-4 py-2 rounded mt-6">Voltar</a>
+      </div>
+    </section>
+
+    <section id="ciencia-biologia" class="section">
+      <div class="max-w-4xl mx-auto">
+        <h2 class="text-3xl md:text-4xl font-bold mb-2">Ciência (Biologia)</h2>
+        <div class="character-sheet">
+          <h3 class="text-xl font-bold mb-4">Detalhes da Perícia</h3>
+          <div class="mb-4">
+            <p><strong>Nome:</strong> Ciência (Biologia)</p>
+            <p><strong>Valor Base:</strong> 01%</p>
+            <p><strong>Descrição:</strong> Estudo de organismos vivos, incluindo anatomia e fisiologia.</p>
+            <p><strong>Exemplo de Uso:</strong> Analisar uma criatura desconhecida ou identificar uma toxina em um corpo.</p>
+            <p><strong>Profissões Relevantes:</strong> Biólogo, Médico, Naturalista.</p>
+          </div>
+        </div>
+        <a href="#pericias" class="button inline-block text-white px-4 py-2 rounded mt-6">Voltar</a>
+      </div>
+    </section>
+
+    <section id="ciencia-botanica" class="section">
+      <div class="max-w-4xl mx-auto">
+        <h2 class="text-3xl md:text-4xl font-bold mb-2">Ciência (Botânica)</h2>
+        <div class="character-sheet">
+          <h3 class="text-xl font-bold mb-4">Detalhes da Perícia</h3>
+          <div class="mb-4">
+            <p><strong>Nome:</strong> Ciência (Botânica)</p>
+            <p><strong>Valor Base:</strong> 01%</p>
+            <p><strong>Descrição:</strong> Conhecimento sobre plantas, incluindo suas propriedades e usos.</p>
+            <p><strong>Exemplo de Uso:</strong> Identificar uma planta venenosa usada em um ritual ou criar um antídoto à base de ervas.</p>
+            <p><strong>Profissões Relevantes:</strong> Botânico, Farmacêutico, Herborista.</p>
+          </div>
+        </div>
+        <a href="#pericias" class="button inline-block text-white px-4 py-2 rounded mt-6">Voltar</a>
+      </div>
+    </section>
+
+    <section id="ciencia-quimica" class="section">
+      <div class="max-w-4xl mx-auto">
+        <h2 class="text-3xl md:text-4xl font-bold mb-2">Ciência (Química)</h2>
+        <div class="character-sheet">
+          <h3 class="text-xl font-bold mb-4">Detalhes da Perícia</h3>
+          <div class="mb-4">
+            <p><strong>Nome:</strong> Ciência (Química)</p>
+            <p><strong>Valor Base:</strong> 01%</p>
+            <p><strong>Descrição:</strong> Manipulação e análise de substâncias químicas para criar ou identificar compostos.</p>
+            <p><strong>Exemplo de Uso:</strong> Criar uma substância para neutralizar um gás tóxico ou analisar um líquido estranho.</p>
+            <p><strong>Profissões Relevantes:</strong> Químico, Farmacêutico, Toxicologista.</p>
+          </div>
+        </div>
+        <a href="#pericias" class="button inline-block text-white px-4 py-2 rounded mt-6">Voltar</a>
+      </div>
+    </section>
+
+    <section id="ciencia-criptografia" class="section">
+      <div class="max-w-4xl mx-auto">
+        <h2 class="text-3xl md:text-4xl font-bold mb-2">Ciência (Criptografia)</h2>
+        <div class="character-sheet">
+          <h3 class="text-xl font-bold mb-4">Detalhes da Perícia</h3>
+          <div class="mb-4">
+            <p><strong>Nome:</strong> Ciência (Criptografia)</p>
+            <p><strong>Valor Base:</strong> 01%</p>
+            <p><strong>Descrição:</strong> Habilidade para decifrar códigos e mensagens secretas.</p>
+            <p><strong>Exemplo de Uso:</strong> Decodificar uma mensagem escondida em um tomo ou quebrar um código de um culto.</p>
+            <p><strong>Profissões Relevantes:</strong> Criptógrafo, Espião, Matemático.</p>
+          </div>
+        </div>
+        <a href="#pericias" class="button inline-block text-white px-4 py-2 rounded mt-6">Voltar</a>
+      </div>
+    </section>
+
+    <section id="ciencia-eletronica" class="section">
+      <div class="max-w-4xl mx-auto">
+        <h2 class="text-3xl md:text-4xl font-bold mb-2">Ciência (Eletrônica)</h2>
+        <div class="character-sheet">
+          <h3 class="text-xl font-bold mb-4">Detalhes da Perícia</h3>
+          <div class="mb-4">
+            <p><strong>Nome:</strong> Ciência (Eletrônica)</p>
+            <p><strong>Valor Base:</strong> 01%</p>
+            <p><strong>Descrição:</strong> Conhecimento para reparar ou construir dispositivos eletrônicos.</p>
+            <p><strong>Exemplo de Uso:</strong> Consertar um rádio para comunicação ou desarmar um dispositivo eletrônico estranho.</p>
+            <p><strong>Profissões Relevantes:</strong> Engenheiro Eletrônico, Técnico.</p>
+          </div>
+        </div>
+        <a href="#pericias" class="button inline-block text-white px-4 py-2 rounded mt-6">Voltar</a>
+      </div>
+    </section>
+
+    <section id="ciencia-fisica" class="section">
+      <div class="max-w-4xl mx-auto">
+        <h2 class="text-3xl md:text-4xl font-bold mb-2">Ciência (Física)</h2>
+        <div class="character-sheet">
+          <h3 class="text-xl font-bold mb-4">Detalhes da Perícia</h3>
+          <div class="mb-4">
+            <p><strong>Nome:</strong> Ciência (Física)</p>
+            <p><strong>Valor Base:</strong> 01%</p>
+            <p><strong>Descrição:</strong> Compreensão de leis naturais, como movimento, energia e gravidade.</p>
+            <p><strong>Exemplo de Uso:</strong> Calcular a trajetória de um objeto ou entender um fenômeno físico anômalo.</p>
+            <p><strong>Profissões Relevantes:</strong> Físico, Engenheiro, Inventor.</p>
+          </div>
+        </div>
+        <a href="#pericias" class="button inline-block text-white px-4 py-2 rounded mt-6">Voltar</a>
+      </div>
+    </section>
+
+    <section id="ciencia-geologia" class="section">
+      <div class="max-w-4xl mx-auto">
+        <h2 class="text-3xl md:text-4xl font-bold mb-2">Ciência (Geologia)</h2>
+        <div class="character-sheet">
+          <h3 class="text-xl font-bold mb-4">Detalhes da Perícia</h3>
+          <div class="mb-4">
+            <p><strong>Nome:</strong> Ciência (Geologia)</p>
+            <p><strong>Valor Base:</strong> 01%</p>
+            <p><strong>Descrição:</strong> Estudo de rochas, minerais e formações terrestres, útil para explorações.</p>
+            <p><strong>Exemplo de Uso:</strong> Identificar uma caverna instável ou reconhecer um mineral ligado ao Mythos.</p>
+            <p><strong>Profissões Relevantes:</strong> Geólogo, Minerador, Explorador.</p>
+          </div>
+        </div>
+        <a href="#pericias" class="button inline-block text-white px-4 py-2 rounded mt-6">Voltar</a>
+      </div>
+    </section>
+
+    <section id="ciencia-historia-natural" class="section">
+      <div class="max-w-4xl mx-auto">
+        <h2 class="text-3xl md:text-4xl font-bold mb-2">Ciência (História Natural)</h2>
+        <div class="character-sheet">
+          <h3 class="text-xl font-bold mb-4">Detalhes da Perícia</h3>
+          <div class="mb-4">
+            <p><strong>Nome:</strong> Ciência (História Natural)</p>
+            <p><strong>Valor Base:</strong> 01%</p>
+            <p><strong>Descrição:</strong> Conhecimento de fauna, flora e ecossistemas, útil em ambientes selvagens.</p>
+            <p><strong>Exemplo de Uso:</strong> Identificar uma criatura misteriosa ou encontrar comida em uma floresta.</p>
+            <p><strong>Profissões Relevantes:</strong> Naturalista, Biólogo, Explorador.</p>
+          </div>
+        </div>
+        <a href="#pericias" class="button inline-block text-white px-4 py-2 rounded mt-6">Voltar</a>
+      </div>
+    </section>
+
+    <section id="ciencia-matematica" class="section">
+      <div class="max-w-4xl mx-auto">
+        <h2 class="text-3xl md:text-4xl font-bold mb-2">Ciência (Matemática)</h2>
+        <div class="character-sheet">
+          <h3 class="text-xl font-bold mb-4">Detalhes da Perícia</h3>
+          <div class="mb-4">
+            <p><strong>Nome:</strong> Ciência (Matemática)</p>
+            <p><strong>Valor Base:</strong> 10%</p>
+            <p><strong>Descrição:</strong> Habilidade em cálculos complexos e resolução de problemas lógicos.</p>
+            <p><strong>Exemplo de Uso:</strong> Resolver um quebra-cabeça numérico em um artefato ou calcular distâncias precisas.</p>
+            <p><strong>Profissões Relevantes:</strong> Matemático, Engenheiro, Contador.</p>
+          </div>
+        </div>
+        <a href="#pericias" class="button inline-block text-white px-4 py-2 rounded mt-6">Voltar</a>
+      </div>
+    </section>
+
+    <section id="ciencia-medicina" class="section">
+      <div class="max-w-4xl mx-auto">
+        <h2 class="text-3xl md:text-4xl font-bold mb-2">Ciência (Medicina)</h2>
+        <div class="character-sheet">
+          <h3 class="text-xl font-bold mb-4">Detalhes da Perícia</h3>
+          <div class="mb-4">
+            <p><strong>Nome:</strong> Ciência (Medicina)</p>
+            <p><strong>Valor Base:</strong> 01%</p>
+            <p><strong>Descrição:</strong> Diagnóstico e tratamento avançado de doenças e ferimentos.</p>
+            <p><strong>Exemplo de Uso:</strong> Tratar uma vítima de um ritual ou diagnosticar uma doença sobrenatural.</p>
+            <p><strong>Profissões Relevantes:</strong> Médico, Cirurgião, Patologista.</p>
+          </div>
+        </div>
+        <a href="#pericias" class="button inline-block text-white px-4 py-2 rounded mt-6">Voltar</a>
+      </div>
+    </section>
+
+    <section id="ciencia-farmacia" class="section">
+      <div class="max-w-4xl mx-auto">
+        <h2 class="text-3xl md:text-4xl font-bold mb-2">Ciência (Farmácia)</h2>
+        <div class="character-sheet">
+          <h3 class="text-xl font-bold mb-4">Detalhes da Perícia</h3>
+          <div class="mb-4">
+            <p><strong>Nome:</strong> Ciência (Farmácia)</p>
+            <p><strong>Valor Base:</strong> 01%</p>
+            <p><strong>Descrição:</strong> Preparação e uso de medicamentos, incluindo antídotos e substâncias específicas.</p>
+            <p><strong>Exemplo de Uso:</strong> Criar um antídoto para um veneno ou preparar uma poção a partir de uma receita antiga.</p>
+            <p><strong>Profissões Relevantes:</strong> Farmacêutico, Químico, Herborista.</p>
+          </div>
+        </div>
+        <a href="#pericias" class="button inline-block text-white px-4 py-2 rounded mt-6">Voltar</a>
+      </div>
+    </section>
+
+    <section id="ciencia-meteorologia" class="section">
+      <div class="max-w-4xl mx-auto">
+        <h2 class="text-3xl md:text-4xl font-bold mb-2">Ciência (Meteorologia)</h2>
+        <div class="character-sheet">
+          <h3 class="text-xl font-bold mb-4">Detalhes da Perícia</h3>
+          <div class="mb-4">
+            <p><strong>Nome:</strong> Ciência (Meteorologia)</p>
+            <p><strong>Valor Base:</strong> 01%</p>
+            <p><strong>Descrição:</strong> Análise e previsão de condições climáticas, útil em expedições.</p>
+            <p><strong>Exemplo de Uso:</strong> Prever uma tempestade para evitar um ritual ao ar livre ou planejar uma viagem segura.</p>
+            <p><strong>Profissões Relevantes:</strong> Meteorologista, Navegador, Explorador.</p>
+          </div>
+        </div>
+        <a href="#pericias" class="button inline-block text-white px-4 py-2 rounded mt-6">Voltar</a>
+      </div>
+    </section>
+
+    <section id="ciencia-zoologia" class="section">
+      <div class="max-w-4xl mx-auto">
+        <h2 class="text-3xl md:text-4xl font-bold mb-2">Ciência (Zoologia)</h2>
+        <div class="character-sheet">
+          <h3 class="text-xl font-bold mb-4">Detalhes da Perícia</h3>
+          <div class="mb-4">
+            <p><strong>Nome:</strong> Ciência (Zoologia)</p>
+            <p><strong>Valor Base:</strong> 01%</p>
+            <p><strong>Descrição:</strong> Estudo de animais, incluindo seus comportamentos e características.</p>
+            <p><strong>Exemplo de Uso:</strong> Identificar uma criatura sobrenatural ou domesticar um animal selvagem.</p>
+            <p><strong>Profissões Relevantes:</strong> Zoólogo, Veterinário, Naturalista.</p>
+          </div>
+        </div>
+        <a href="#pericias" class="button inline-block text-white px-4 py-2 rounded mt-6">Voltar</a>
+      </div>
+    </section>
+
+    <section id="conducao" class="section">
+      <div class="max-w-4xl mx-auto">
+        <h2 class="text-3xl md:text-4xl font-bold mb-2">Condução</h2>
+        <div class="character-sheet">
+          <h3 class="text-xl font-bold mb-4">Detalhes da Perícia</h3>
+          <div class="mb-4">
+            <p><strong>Nome:</strong> Condução</p>
+            <p><strong>Valor Base:</strong> 20%</p>
+            <p><strong>Descrição:</strong> Habilidade para dirigir veículos terrestres, como carros ou caminhões.</p>
+            <p><strong>Exemplo de Uso:</strong> Escapar de um culto em uma perseguição de carro ou manobrar em terreno difícil.</p>
+            <p><strong>Profissões Relevantes:</strong> Motorista, Piloto de Corrida, Detetive.</p>
+          </div>
+        </div>
+        <a href="#pericias" class="button inline-block text-white px-4 py-2 rounded mt-6">Voltar</a>
+      </div>
+    </section>
+
+    <section id="contabilidade" class="section">
+      <div class="max-w-4xl mx-auto">
+        <h2 class="text-3xl md:text-4xl font-bold mb-2">Contabilidade</h2>
+        <div class="character-sheet">
+          <h3 class="text-xl font-bold mb-4">Detalhes da Perícia</h3>
+          <div class="mb-4">
+            <p><strong>Nome:</strong> Contabilidade</p>
+            <p><strong>Valor Base:</strong> 05%</p>
+            <p><strong>Descrição:</strong> Gerenciamento de finanças e análise de registros contábeis.</p>
+            <p><strong>Exemplo de Uso:</strong> Descobrir fraudes financeiras de um culto ou gerenciar os recursos de uma expedição.</p>
+            <p><strong>Profissões Relevantes:</strong> Contador, Banqueiro, Investigador Financeiro.</p>
+          </div>
+        </div>
+        <a href="#pericias" class="button inline-block text-white px-4 py-2 rounded mt-6">Voltar</a>
+      </div>
+    </section>
+
+    <section id="criptografia" class="section">
+      <div class="max-w-4xl mx-auto">
+        <h2 class="text-3xl md:text-4xl font-bold mb-2">Criptografia</h2>
+        <div class="character-sheet">
+          <h3 class="text-xl font-bold mb-4">Detalhes da Perícia</h3>
+          <div class="mb-4">
+            <p><strong>Nome:</strong> Criptografia</p>
+            <p><strong>Valor Base:</strong> 01%</p>
+            <p><strong>Descrição:</strong> Habilidade para decodificar mensagens cifradas ou criar códigos próprios.</p>
+            <p><strong>Exemplo de Uso:</strong> Decifrar uma mensagem de um culto ou criar um código para comunicação secreta.</p>
+            <p><strong>Profissões Relevantes:</strong> Criptógrafo, Espião, Matemático.</p>
+          </div>
+        </div>
+        <a href="#pericias" class="button inline-block text-white px-4 py-2 rounded mt-6">Voltar</a>
+      </div>
+    </section>
+
+    <section id="direito" class="section">
+      <div class="max-w-4xl mx-auto">
+        <h2 class="text-3xl md:text-4xl font-bold mb-2">Direito</h2>
+        <div class="character-sheet">
+          <h3 class="text-xl font-bold mb-4">Detalhes da Perícia</h3>
+          <div class="mb-4">
+            <p><strong>Nome:</strong> Direito</p>
+            <p><strong>Valor Base:</strong> 05%</p>
+            <p><strong>Descrição:</strong> Conhecimento de leis, contratos e sistemas jurídicos, permitindo a interpretação e aplicação de normas legais.</p>
+            <p><strong>Exemplo de Uso:</strong> Negociar com autoridades para liberar um aliado detido ou identificar violações legais em atividades de um culto.</p>
+            <p><strong>Profissões Relevantes:</strong> Advogado, Juiz, Investigador Legal.</p>
+          </div>
+        </div>
+        <a href="#pericias" class="button inline-block text-white px-4 py-2 rounded mt-6">Voltar</a>
+      </div>
+    </section>
+
+    <section id="disfarcar" class="section">
+      <div class="max-w-4xl mx-auto">
+        <h2 class="text-3xl md:text-4xl font-bold mb-2">Disfarçar</h2>
+        <div class="character-sheet">
+          <h3 class="text-xl font-bold mb-4">Detalhes da Perícia</h3>
+          <div class="mb-4">
+            <p><strong>Nome:</strong> Disfarçar</p>
+            <p><strong>Valor Base:</strong> 05%</p>
+            <p><strong>Descrição:</strong> Habilidade para alterar a aparência ou comportamento para enganar observadores, seja com maquiagem, roupas ou imitação.</p>
+            <p><strong>Exemplo de Uso:</strong> Infiltrar-se em um culto disfarçado como um de seus membros ou passar despercebido em um evento vigiado.</p>
+            <p><strong>Profissões Relevantes:</strong> Espião, Ator, Ladrão.</p>
+          </div>
+        </div>
+        <a href="#pericias" class="button inline-block text-white px-4 py-2 rounded mt-6">Voltar</a>
+      </div>
+    </section>
+
+    <section id="eletronica" class="section">
+      <div class="max-w-4xl mx-auto">
+        <h2 class="text-3xl md:text-4xl font-bold mb-2">Eletrônica</h2>
+        <div class="character-sheet">
+          <h3 class="text-xl font-bold mb-4">Detalhes da Perícia</h3>
+          <div class="mb-4">
+            <p><strong>Nome:</strong> Eletrônica</p>
+            <p><strong>Valor Base:</strong> 01%</p>
+            <p><strong>Descrição:</strong> Capacidade de reparar, construir ou modificar dispositivos eletrônicos, incluindo rádios e sistemas rudimentares da época.</p>
+            <p><strong>Exemplo de Uso:</strong> Consertar um transmissor para pedir ajuda ou desarmar um dispositivo eletrônico encontrado em um laboratório secreto.</p>
+            <p><strong>Profissões Relevantes:</strong> Engenheiro Eletrônico, Técnico, Inventor.</p>
+          </div>
+        </div>
+        <a href="#pericias" class="button inline-block text-white px-4 py-2 rounded mt-6">Voltar</a>
+      </div>
+    </section>
+
+    <section id="encontar" class="section">
+      <div class="max-w-4xl mx-auto">
+        <h2 class="text-3xl md:text-4xl font-bold mb-2">Encontar</h2>
+        <div class="character-sheet">
+          <h3 class="text-xl font-bold mb-4">Detalhes da Perícia</h3>
+          <div class="mb-4">
+            <p><strong>Nome:</strong> Encontrar</p>
+            <p><strong>Valor Base:</strong> 25%</p>
+            <p><strong>Descrição:</strong> Habilidade para localizar objetos escondidos, pistas ou passagens secretas em um ambiente.</p>
+            <p><strong>Exemplo de Uso:</strong> Descobrir um compartimento secreto em uma parede ou encontrar um tomo escondido em uma biblioteca.</p>
+            <p><strong>Profissões Relevantes:</strong> Detetive, Arqueólogo, Explorador.</p>
+          </div>
+        </div>
+        <a href="#pericias" class="button inline-block text-white px-4 py-2 rounded mt-6">Voltar</a>
+      </div>
+    </section>
+
+    <section id="escalar" class="section">
+      <div class="max-w-4xl mx-auto">
+        <h2 class="text-3xl md:text-4xl font-bold mb-2">Escalar</h2>
+        <div class="character-sheet">
+          <h3 class="text-xl font-bold mb-4">Detalhes da Perícia</h3>
+          <div class="mb-4">
+            <p><strong>Nome:</strong> Escalar</p>
+            <p><strong>Valor Base:</strong> 20%</p>
+            <p><strong>Descrição:</strong> Capacidade de subir superfícies íngremes, como rochas, muros ou árvores, com ou sem equipamentos.</p>
+            <p><strong>Exemplo de Uso:</strong> Escalar uma montanha para alcançar uma caverna ou subir um muro para fugir de perseguidores.</p>
+            <p><strong>Profissões Relevantes:</strong> Alpinista, Aventureiro, Ladrão.</p>
+          </div>
+        </div>
+        <a href="#pericias" class="button inline-block text-white px-4 py-2 rounded mt-6">Voltar</a>
+      </div>
+    </section>
+
+    <section id="escutar" class="section">
+      <div class="max-w-4xl mx-auto">
+        <h2 class="text-3xl md:text-4xl font-bold mb-2">Escutar</h2>
+        <div class="character-sheet">
+          <h3 class="text-xl font-bold mb-4">Detalhes da Perícia</h3>
+          <div class="mb-4">
+            <p><strong>Nome:</strong> Escutar</p>
+            <p><strong>Valor Base:</strong> 20%</p>
+            <p><strong>Descrição:</strong> Habilidade para perceber sons distantes, abafados ou sutis, como conversas ou ruídos de perigo.</p>
+            <p><strong>Exemplo de Uso:</strong> Ouvir passos de um cultista se aproximando ou detectar um som estranho em uma casa abandonada.</p>
+            <p><strong>Profissões Relevantes:</strong> Detetive, Caçador, Espião.</p>
+          </div>
+        </div>
+        <a href="#pericias" class="button inline-block text-white px-4 py-2 rounded mt-6">Voltar</a>
+      </div>
+    </section>
+
+    <section id="esquivar" class="section">
+      <div class="max-w-4xl mx-auto">
+        <h2 class="text-3xl md:text-4xl font-bold mb-2">Esquivar</h2>
+        <div class="character-sheet">
+          <h3 class="text-xl font-bold mb-4">Detalhes da Perícia</h3>
+          <div class="mb-4">
+            <p><strong>Nome:</strong> Esquivar</p>
+            <p><strong>Valor Base:</strong> 30%</p>
+            <p><strong>Descrição:</strong> Capacidade de evitar ataques físicos ou perigos, como golpes, projéteis ou armadilhas.</p>
+            <p><strong>Exemplo de Uso:</strong> Desviar de um ataque de uma criatura ou evitar uma armadilha em uma ruína.</p>
+            <p><strong>Profissões Relevantes:</strong> Atleta, Lutador, Aventureiro.</p>
+          </div>
+        </div>
+        <a href="#pericias" class="button inline-block text-white px-4 py-2 rounded mt-6">Voltar</a>
+      </div>
+    </section>
+
+    <section id="furtividade" class="section">
+      <div class="max-w-4xl mx-auto">
+        <h2 class="text-3xl md:text-4xl font-bold mb-2">Furtividade</h2>
+        <div class="character-sheet">
+          <h3 class="text-xl font-bold mb-4">Detalhes da Perícia</h3>
+          <div class="mb-4">
+            <p><strong>Nome:</strong> Furtividade</p>
+            <p><strong>Valor Base:</strong> 20%</p>
+            <p><strong>Descrição:</strong> Habilidade para se mover sem ser notado, seja em ambientes urbanos ou naturais.</p>
+            <p><strong>Exemplo de Uso:</strong> Passar por guardas sem ser visto ou se esconder de uma criatura em uma floresta.</p>
+            <p><strong>Profissões Relevantes:</strong> Ladrão, Espião, Caçador.</p>
+          </div>
+        </div>
+        <a href="#pericias" class="button inline-block text-white px-4 py-2 rounded mt-6">Voltar</a>
+      </div>
+    </section>
+
+    <section id="furtividade-sobrevivencia" class="section">
+      <div class="max-w-4xl mx-auto">
+        <h2 class="text-3xl md:text-4xl font-bold mb-2">Furtividade (Sobrevivência)</h2>
+        <div class="character-sheet">
+          <h3 class="text-xl font-bold mb-4">Detalhes da Perícia</h3>
+          <div class="mb-4">
+            <p><strong>Nome:</strong> Furtividade (Sobrevivência)</p>
+            <p><strong>Valor Base:</strong> 10%</p>
+            <p><strong>Descrição:</strong> Capacidade de se camuflar ou mover-se discretamente em ambientes naturais, como florestas ou pântanos.</p>
+            <p><strong>Exemplo de Uso:</strong> Esconder-se em uma selva para evitar predadores ou rastrear um inimigo sem ser detectado.</p>
+            <p><strong>Profissões Relevantes:</strong> Caçador, Explorador, Guarda Florestal.</p>
+          </div>
+        </div>
+        <a href="#pericias" class="button inline-block text-white px-4 py-2 rounded mt-6">Voltar</a>
+      </div>
+    </section>
+
+    <section id="lancar" class="section">
+      <div class="max-w-4xl mx-auto">
+        <h2 class="text-3xl md:text-4xl font-bold mb-2">Lançar</h2>
+        <div class="character-sheet">
+          <h3 class="text-xl font-bold mb-4">Detalhes da Perícia</h3>
+          <div class="mb-4">
+            <p><strong>Nome:</strong> Lançar</p>
+            <p><strong>Valor Base:</strong> 20%</p>
+            <p><strong>Descrição:</strong> Habilidade para arremessar objetos ou armas com precisão, como facas, granadas ou arpões.</p>
+            <p><strong>Exemplo de Uso:</strong> Acertar um alvo com uma lança ou jogar uma corda para alcançar um local elevado.</p>
+            <p><strong>Profissões Relevantes:</strong> Atleta, Caçador, Aventureiro.</p>
+          </div>
+        </div>
+        <a href="#pericias" class="button inline-block text-white px-4 py-2 rounded mt-6">Voltar</a>
+      </div>
+    </section>
+
+    <section id="manejar" class="section">
+      <div class="max-w-4xl mx-auto">
+        <h2 class="text-3xl md:text-4xl font-bold mb-2">Manejar</h2>
+        <div class="character-sheet">
+          <h3 class="text-xl font-bold mb-4">Detalhes da Perícia</h3>
+          <div class="mb-4">
+            <p><strong>Nome:</strong> Manejar</p>
+            <p><strong>Valor Base:</strong> 10%</p>
+            <p><strong>Descrição:</strong> Habilidade para usar armas corpo a corpo, como facas, espadas ou porretes, em combate.</p>
+            <p><strong>Exemplo de Uso:</strong> Lutar contra um inimigo com uma faca ou usar um bastão para se defender.</p>
+            <p><strong>Profissões Relevantes:</strong> Lutador, Soldado, Guarda.</p>
+          </div>
+        </div>
+        <a href="#pericias" class="button inline-block text-white px-4 py-2 rounded mt-6">Voltar</a>
+      </div>
+    </section>
+
+    <section id="matematica" class="section">
+      <div class="max-w-4xl mx-auto">
+        <h2 class="text-3xl md:text-4xl font-bold mb-2">Matemática</h2>
+        <div class="character-sheet">
+          <h3 class="text-xl font-bold mb-4">Detalhes da Perícia</h3>
+          <div class="mb-4">
+            <p><strong>Nome:</strong> Matemática</p>
+            <p><strong>Valor Base:</strong> 10%</p>
+            <p><strong>Descrição:</strong> Capacidade de realizar cálculos complexos e resolver problemas lógicos ou numéricos.</p>
+            <p><strong>Exemplo de Uso:</strong> Decifrar um código matemático em um artefato ou calcular a posição de um portal místico.</p>
+            <p><strong>Profissões Relevantes:</strong> Matemático, Engenheiro, Contador.</p>
+          </div>
+        </div>
+        <a href="#pericias" class="button inline-block text-white px-4 py-2 rounded mt-6">Voltar</a>
+      </div>
+    </section>
+
+    <section id="medicina" class="section">
+      <div class="max-w-4xl mx-auto">
+        <h2 class="text-3xl md:text-4xl font-bold mb-2">Medicina</h2>
+        <div class="character-sheet">
+          <h3 class="text-xl font-bold mb-4">Detalhes da Perícia</h3>
+          <div class="mb-4">
+            <p><strong>Nome:</strong> Medicina</p>
+            <p><strong>Valor Base:</strong> 01%</p>
+            <p><strong>Descrição:</strong> Conhecimento avançado para diagnosticar e tratar doenças, ferimentos ou condições médicas complexas.</p>
+            <p><strong>Exemplo de Uso:</strong> Realizar uma cirurgia de emergência ou identificar uma doença sobrenatural em uma vítima.</p>
+            <p><strong>Profissões Relevantes:</strong> Médico, Cirurgião, Patologista.</p>
+          </div>
+        </div>
+        <a href="#pericias" class="button inline-block text-white px-4 py-2 rounded mt-6">Voltar</a>
+      </div>
+    </section>
+
+    <section id="meteorologia" class="section">
+      <div class="max-w-4xl mx-auto">
+        <h2 class="text-3xl md:text-4xl font-bold mb-2">Meteorologia</h2>
+        <div class="character-sheet">
+          <h3 class="text-xl font-bold mb-4">Detalhes da Perícia</h3>
+          <div class="mb-4">
+            <p><strong>Nome:</strong> Meteorologia</p>
+            <p><strong>Valor Base:</strong> 01%</p>
+            <p><strong>Descrição:</strong> Habilidade para prever e analisar condições climáticas, útil para planejar expedições ou evitar desastres.</p>
+            <p><strong>Exemplo de Uso:</strong> Prever uma tempestade que pode atrapalhar um ritual ou planejar uma viagem segura pelo mar.</p>
+            <p><strong>Profissões Relevantes:</strong> Meteorologista, Navegador, Explorador.</p>
+          </div>
+        </div>
+        <a href="#pericias" class="button inline-block text-white px-4 py-2 rounded mt-6">Voltar</a>
+      </div>
+    </section>
+
+    <section id="mitos-de-cthulhu" class="section">
+      <div class="max-w-4xl mx-auto">
+        <h2 class="text-3xl md:text-4xl font-bold mb-2">Mitos de Cthulhu</h2>
+        <div class="character-sheet">
+          <h3 class="text-xl font-bold mb-4">Detalhes da Perícia</h3>
+          <div class="mb-4">
+            <p><strong>Nome:</strong> Mitos de Cthulhu</p>
+            <p><strong>Valor Base:</strong> 00%</p>
+            <p><strong>Descrição:</strong> Conhecimento sobre entidades, rituais e segredos do Mythos de Cthulhu, geralmente adquirido a um alto custo mental.</p>
+            <p><strong>Exemplo de Uso:</strong> Identificar um símbolo de um Grande Antigo ou compreender um tomo proibido.</p>
+            <p><strong>Profissões Relevantes:</strong> Ocultista, Arqueólogo, Investigador Paranormal.</p>
+          </div>
+        </div>
+        <a href="#pericias" class="button inline-block text-white px-4 py-2 rounded mt-6">Voltar</a>
+      </div>
+    </section>
+
+    <section id="navegacao" class="section">
+      <div class="max-w-4xl mx-auto">
+        <h2 class="text-3xl md:text-4xl font-bold mb-2">Navegação</h2>
+        <div class="character-sheet">
+          <h3 class="text-xl font-bold mb-4">Detalhes da Perícia</h3>
+          <div class="mb-4">
+            <p><strong>Nome:</strong> Navegação</p>
+            <p><strong>Valor Base:</strong> 10%</p>
+            <p><strong>Descrição:</strong> Capacidade de se orientar em viagens por terra, mar ou ar, usando mapas, estrelas ou instrumentos.</p>
+            <p><strong>Exemplo de Uso:</strong> Encontrar o caminho em uma floresta densa ou traçar uma rota marítima segura.</p>
+            <p><strong>Profissões Relevantes:</strong> Navegador, Explorador, Piloto.</p>
+          </div>
+        </div>
+        <a href="#pericias" class="button inline-block text-white px-4 py-2 rounded mt-6">Voltar</a>
+      </div>
+    </section>
+
+    <section id="natacao" class="section">
+      <div class="max-w-4xl mx-auto">
+        <h2 class="text-3xl md:text-4xl font-bold mb-2">Natação</h2>
+        <div class="character-sheet">
+          <h3 class="text-xl font-bold mb-4">Detalhes da Perícia</h3>
+          <div class="mb-4">
+            <p><strong>Nome:</strong> Natação</p>
+            <p><strong>Valor Base:</strong> 20%</p>
+            <p><strong>Descrição:</strong> Habilidade para nadar em águas abertas, rios ou mares, mesmo em condições adversas.</p>
+            <p><strong>Exemplo de Uso:</strong> Atravessar um rio para escapar de um culto ou resgatar um objeto submerso.</p>
+            <p><strong>Profissões Relevantes:</strong> Nadador, Marinheiro, Mergulhador.</p>
+          </div>
+        </div>
+        <a href="#pericias" class="button inline-block text-white px-4 py-2 rounded mt-6">Voltar</a>
+      </div>
+    </section>
+
+    <section id="natural" class="section">
+      <div class="max-w-4xl mx-auto">
+        <h2 class="text-3xl md:text-4xl font-bold mb-2">Natural</h2>
+        <div class="character-sheet">
+          <h3 class="text-xl font-bold mb-4">Detalhes da Perícia</h3>
+          <div class="mb-4">
+            <p><strong>Nome:</strong> Natural</p>
+            <p><strong>Valor Base:</strong> 10%</p>
+            <p><strong>Descrição:</strong> Conhecimento prático para sobreviver em ambientes selvagens, incluindo encontrar comida e abrigo.</p>
+            <p><strong>Exemplo de Uso:</strong> Construir um abrigo em uma floresta ou identificar plantas comestíveis em uma expedição.</p>
+            <p><strong>Profissões Relevantes:</strong> Explorador, Caçador, Guarda Florestal.</p>
+          </div>
+        </div>
+        <a href="#pericias" class="button inline-block text-white px-4 py-2 rounded mt-6">Voltar</a>
+      </div>
+    </section>
+
+    <section id="pilotar" class="section">
+      <div class="max-w-4xl mx-auto">
+        <h2 class="text-3xl md:text-4xl font-bold mb-2">Pilotar</h2>
+        <div class="character-sheet">
+          <h3 class="text-xl font-bold mb-4">Detalhes da Perícia</h3>
+          <div class="mb-4">
+            <p><strong>Nome:</strong> Pilotar</p>
+            <p><strong>Valor Base:</strong> 01%</p>
+            <p><strong>Descrição:</strong> Habilidade para controlar aeronaves ou veículos complexos, como aviões ou barcos a motor.</p>
+            <p><strong>Exemplo de Uso:</strong> Pilotar um avião para escapar de uma ilha ou manobrar um barco em águas turbulentas.</p>
+            <p><strong>Profissões Relevantes:</strong> Piloto, Marinheiro, Aventureiro.</p>
+          </div>
+        </div>
+        <a href="#pericias" class="button inline-block text-white px-4 py-2 rounded mt-6">Voltar</a>
+      </div>
+    </section>
+
+    <section id="primeiros-socorros" class="section">
+      <div class="max-w-4xl mx-auto">
+        <h2 class="text-3xl md:text-4xl font-bold mb-2">Primeiros Socorros</h2>
+        <div class="character-sheet">
+          <h3 class="text-xl font-bold mb-4">Detalhes da Perícia</h3>
+          <div class="mb-4">
+            <p><strong>Nome:</strong> Primeiros Socorros</p>
+            <p><strong>Valor Base:</strong> 30%</p>
+            <p><strong>Descrição:</strong> Habilidade para prestar cuidados médicos básicos em emergências, como estancar sangramentos ou tratar ferimentos leves.</p>
+            <p><strong>Exemplo de Uso:</strong> Tratar um ferimento de um aliado após um ataque ou estabilizar uma vítima até a chegada de ajuda.</p>
+            <p><strong>Profissões Relevantes:</strong> Médico, Enfermeiro, Paramédico.</p>
+          </div>
+        </div>
+        <a href="#pericias" class="button inline-block text-white px-4 py-2 rounded mt-6">Voltar</a>
+      </div>
+    </section>
+
+    <section id="psicanalise" class="section">
+      <div class="max-w-4xl mx-auto">
+        <h2 class="text-3xl md:text-4xl font-bold mb-2">Psicanálise</h2>
+        <div class="character-sheet">
+          <h3 class="text-xl font-bold mb-4">Detalhes da Perícia</h3>
+          <div class="mb-4">
+            <p><strong>Nome:</strong> Psicanálise</p>
+            <p><strong>Valor Base:</strong> 01%</p>
+            <p><strong>Descrição:</strong> Capacidade de analisar e tratar a mente, ajudando a recuperar sanidade ou entender traumas psicológicos.</p>
+            <p><strong>Exemplo de Uso:</strong> Acalmar um aliado que sofreu um choque sobrenatural ou interpretar os sonhos de uma vítima.</p>
+            <p><strong>Profissões Relevantes:</strong> Psicanalista, Psicólogo, Médico.</p>
+          </div>
+        </div>
+        <a href="#pericias" class="button inline-block text-white px-4 py-2 rounded mt-6">Voltar</a>
+      </div>
+    </section>
+
+    <section id="psicologia" class="section">
+      <div class="max-w-4xl mx-auto">
+        <h2 class="text-3xl md:text-4xl font-bold mb-2">Psicologia</h2>
+        <div class="character-sheet">
+          <h3 class="text-xl font-bold mb-4">Detalhes da Perícia</h3>
+          <div class="mb-4">
+            <p><strong>Nome:</strong> Psicologia</p>
+            <p><strong>Valor Base:</strong> 10%</p>
+            <p><strong>Descrição:</strong> Habilidade para entender comportamentos, emoções e intenções de outras pessoas.</p>
+            <p><strong>Exemplo de Uso:</strong> Detectar se alguém está mentindo ou prever as ações de um cultista com base em seu comportamento.</p>
+            <p><strong>Profissões Relevantes:</strong> Psicólogo, Detetive, Jornalista.</p>
+          </div>
+        </div>
+        <a href="#pericias" class="button inline-block text-white px-4 py-2 rounded mt-6">Voltar</a>
+      </div>
+    </section>
+
+    <section id="rastrear" class="section">
+      <div class="max-w-4xl mx-auto">
+        <h2 class="text-3xl md:text-4xl font-bold mb-2">Rastrear</h2>
+        <div class="character-sheet">
+          <h3 class="text-xl font-bold mb-4">Detalhes da Perícia</h3>
+          <div class="mb-4">
+            <p><strong>Nome:</strong> Rastrear</p>
+            <p><strong>Valor Base:</strong> 10%</p>
+            <p><strong>Descrição:</strong> Capacidade de seguir rastros ou pistas físicas, como pegadas ou marcas, em ambientes naturais ou urbanos.</p>
+            <p><strong>Exemplo de Uso:</strong> Seguir as pegadas de uma criatura em uma floresta ou rastrear um suspeito em uma cidade.</p>
+            <p><strong>Profissões Relevantes:</strong> Caçador, Detetive, Explorador.</p>
+          </div>
+        </div>
+        <a href="#pericias" class="button inline-block text-white px-4 py-2 rounded mt-6">Voltar</a>
+      </div>
+    </section>
+
+    <section id="saltar" class="section">
+      <div class="max-w-4xl mx-auto">
+        <h2 class="text-3xl md:text-4xl font-bold mb-2">Saltar</h2>
+        <div class="character-sheet">
+          <h3 class="text-xl font-bold mb-4">Detalhes da Perícia</h3>
+          <div class="mb-4">
+            <p><strong>Nome:</strong> Saltar</p>
+            <p><strong>Valor Base:</strong> 20%</p>
+            <p><strong>Descrição:</strong> Habilidade para pular distâncias ou alturas consideráveis, com ou sem impulso.</p>
+            <p><strong>Exemplo de Uso:</strong> Saltar sobre um abismo em uma caverna ou pular um muro para escapar de perseguidores.</p>
+            <p><strong>Profissões Relevantes:</strong> Atleta, Aventureiro, Ladrão.</p>
+          </div>
+        </div>
+        <a href="#pericias" class="button inline-block text-white px-4 py-2 rounded mt-6">Voltar</a>
+      </div>
+    </section>
+
+    <section id="sleight-of-hand" class="section">
+      <div class="max-w-4xl mx-auto">
+        <h2 class="text-3xl md:text-4xl font-bold mb-2">Sleight of Hand</h2>
+        <div class="character-sheet">
+          <h3 class="text-xl font-bold mb-4">Detalhes da Perícia</h3>
+          <div class="mb-4">
+            <p><strong>Nome:</strong> Sleight of Hand</p>
+            <p><strong>Valor Base:</strong> 05%</p>
+            <p><strong>Descrição:</strong> Habilidade para realizar truques de mãos, como furtar objetos ou manipular itens discretamente.</p>
+            <p><strong>Exemplo de Uso:</strong> Roubar um artefato do bolso de um cultista ou esconder um objeto durante uma revista.</p>
+            <p><strong>Profissões Relevantes:</strong> Ladrão, Mágico, Espião.</p>
+          </div>
+        </div>
+        <a href="#pericias" class="button inline-block text-white px-4 py-2 rounded mt-6">Voltar</a>
+      </div>
+    </section>
+
+    <section id="sobrevivencia" class="section">
+      <div class="max-w-4xl mx-auto">
+        <h2 class="text-3xl md:text-4xl font-bold mb-2">Sobrevivência</h2>
+        <div class="character-sheet">
+          <h3 class="text-xl font-bold mb-4">Detalhes da Perícia</h3>
+          <div class="mb-4">
+            <p><strong>Nome:</strong> Sobrevivência</p>
+            <p><strong>Valor Base:</strong> 10%</p>
+            <p><strong>Descrição:</strong> Capacidade de sobreviver em ambientes hostis, encontrando comida, água e abrigo.</p>
+            <p><strong>Exemplo de Uso:</strong> Sobreviver em um deserto após um acidente ou construir uma armadilha para capturar comida.</p>
+            <p><strong>Profissões Relevantes:</strong> Explorador, Caçador, Guarda Florestal.</p>
+          </div>
+        </div>
+        <a href="#pericias" class="button inline-block text-white px-4 py-2 rounded mt-6">Voltar</a>
+      </div>
+    </section>
+
+    <section id="usar-computadores" class="section">
+      <div class="max-w-4xl mx-auto">
+        <h2 class="text-3xl md:text-4xl font-bold mb-2">Usar Computadores</h2>
+        <div class="character-sheet">
+          <h3 class="text-xl font-bold mb-4">Detalhes da Perícia</h3>
+          <div class="mb-4">
+            <p><strong>Nome:</strong> Usar Computadores</p>
+            <p><strong>Valor Base:</strong> 05%</p>
+            <p><strong>Descrição:</strong> Habilidade para operar sistemas computacionais ou tecnologias rudimentares da época, como máquinas de cálculo.</p>
+            <p><strong>Exemplo de Uso:</strong> Decifrar dados em um dispositivo antigo ou hackear um sistema básico de uma organização.</p>
+            <p><strong>Profissões Relevantes:</strong> Engenheiro, Técnico, Cientista.</p>
+          </div>
+        </div>
+        <a href="#pericias" class="button inline-block text-white px-4 py-2 rounded mt-6">Voltar</a>
+      </div>
+    </section>
+
+    <!-- Contato Section -->
+    <section id="contato" class="section">
+      <div class="max-w-4xl mx-auto">
+        <h2 class="text-3xl md:text-4xl font-bold mb-4">Contato</h2>
+        <p class="text-lg mb-4">Entre em contato conosco para mais informações sobre a campanha ou para participar da próxima sessão!</p>
+        <form class="space-y-4">
+          <div>
+            <label for="name" class="block text-lg">Nome:</label>
+            <input type="text" id="name" name="name" class="w-full p-2 border border-[#2ecc71] rounded bg-[#1a1a1a] text-white" required>
+          </div>
+          <div>
+            <label for="email" class="block text-lg">E-mail:</label>
+            <input type="email" id="email" name="email" class="w-full p-2 border border-[#2ecc71] rounded bg-[#1a1a1a] text-white" required>
+          </div>
+          <div>
+            <label for="message" class="block text-lg">Mensagem:</label>
+            <textarea id="message" name="message" rows="5" class="w-full p-2 border border-[#2ecc71] rounded bg-[#1a1a1a] text-white" required></textarea>
+          </div>
+          <button type="submit" class="button text-white px-4 py-2 rounded">Enviar</button>
+        </form>
+      </div>
+    </section>
+  </main>
+
+  <footer class="bg-teal-950 text-white text-center py-4">
+    <p>&copy; 2025 A Mesa dos Antigos. Todos os direitos reservados.</p>
+  </footer>
+
+  <script>
+    // Theme Toggle
+    const themeToggle = document.getElementById('theme-toggle');
+    const themeIcon = themeToggle.querySelector('.theme-icon');
+    themeToggle.addEventListener('click', () => {
+      document.body.classList.toggle('light-mode');
+      themeIcon.textContent = document.body.classList.contains('light-mode') ? '🌞' : '🌙';
+      localStorage.setItem('theme', document.body.classList.contains('light-mode') ? 'light' : 'dark');
+    });
+
+    // Load theme from localStorage
+    if (localStorage.getItem('theme') === 'light') {
+      document.body.classList.add('light-mode');
+      themeIcon.textContent = '🌞';
+    }
+
+    // Navigation and Section Visibility
+    const sections = document.querySelectorAll('.section');
+    const navLinks = document.querySelectorAll('.nav-link');
+
+    function showSection(sectionId) {
+      sections.forEach(section => {
+        section.classList.remove('active');
+        if (section.id === sectionId) {
+          section.classList.add('active');
+        }
+      });
+      navLinks.forEach(link => {
+        link.classList.remove('text-[#2ecc71]');
+        if (link.getAttribute('href') === `#${sectionId}`) {
+          link.classList.add('text-[#2ecc71]');
+        }
+      });
+      const targetSection = document.getElementById(sectionId);
+      if (targetSection) {
+        targetSection.scrollIntoView({ behavior: 'smooth' });
+      }
+    }
+
+    navLinks.forEach(link => {
+      link.addEventListener('click', (e) => {
+        e.preventDefault();
+        const sectionId = link.getAttribute('href').substring(1);
+        showSection(sectionId);
+        history.pushState(null, null, `#${sectionId}`);
+      });
+    });
+
+    // Handle profile item clicks
+    document.querySelectorAll('.profile-item a').forEach(link => {
+      link.addEventListener('click', (e) => {
+        e.preventDefault();
+        const sectionId = link.getAttribute('href').substring(1);
+        showSection(sectionId);
+        history.pushState(null, null, `#${sectionId}`);
+      });
+    });
+
+    // Handle back buttons
+    document.querySelectorAll('.button[href="#pericias"]').forEach(button => {
+      button.addEventListener('click', (e) => {
+        e.preventDefault();
+        showSection('pericias');
+        history.pushState(null, null, '#pericias');
+      });
+    });
+
+    // Handle browser back/forward
+    window.addEventListener('popstate', () => {
+      const sectionId = window.location.hash.substring(1) || 'inicio';
+      showSection(sectionId);
+    });
+
+    // Show initial section
+    const initialSection = window.location.hash.substring(1) || 'inicio';
+    showSection(initialSection);
+    
+    document.addEventListener('DOMContentLoaded', () => {
+    const inputs = document.querySelectorAll('.pericia-input');
+
+    function updateValues(input) {
+      const valorTotal = parseInt(input.value, 10);
+      const halfValue = Math.floor(valorTotal / 2);
+      const fifthValue = Math.floor(valorTotal / 5);
+
+      const periciaP = input.closest('p');
+      const halfSpan = periciaP.querySelector('.half-value');
+      const fifthSpan = periciaP.querySelector('.fifth-value');
+
+      if (halfSpan && fifthSpan) {
+        halfSpan.textContent = `(1/2: ${halfValue}%)`;
+        fifthSpan.textContent = `(1/5: ${fifthValue}%)`;
+      }
+    }
+
+    inputs.forEach(input => {
+      updateValues(input); // Calcula os valores iniciais
+      input.addEventListener('input', () => updateValues(input)); // Atualiza ao alterar
+    });
+  });
+  </script>
+</body>
+</html>
